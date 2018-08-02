@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<?php
+function header_libs($title)
+{
+    ?>
     <meta charset="utf-8">
-    <title>Dashboard</title>
+    <title><?php echo $title; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -11,14 +11,12 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link href="css/style.css" rel="stylesheet">
-    <link href="css/pages/dashboard.css" rel="stylesheet">
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-</head>
-
-<body>
+    <?php
+}
+function navbar_top($active_page = 'index')
+{
+    global $user;
+    ?>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
@@ -27,12 +25,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <a class="brand" href="index.html">Admin </a>
+                <a class="brand" href="index.php">Admin </a>
                 <div class="nav-collapse">
                     <ul class="nav pull-right">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-user"></i> EGrappler.com
+                                <i class="fas fa-user"></i> <?php echo $user->display_name; ?>
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
@@ -40,7 +38,7 @@
                                     <a href="javascript:;">Profile</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">Logout</a>
+                                    <a href="/admin/login.php?logout=true">Logout</a>
                                 </li>
                             </ul>
                         </li>
@@ -57,32 +55,32 @@
         <div class="subnavbar-inner">
             <div class="container">
                 <ul class="mainnav">
-                    <li>
-                        <a href="index.html">
+                    <li <?php echo $active_page == 'index' ? 'class="active"' : ''; ?>>
+                        <a href="index.php">
                             <i class="fas fa-utensils"></i>
                             <span>Orders</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="reports.html">
+                    <li <?php echo $active_page == 'customers' ? 'class="active"' : ''; ?>>
+                        <a href="customers.php">
                             <i class="fas fa-users"></i>
                             <span>Customers</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="archive.html">
+                    <li <?php echo $active_page == 'archive' ? 'class="active"' : ''; ?>>
+                        <a href="archive.php">
                             <i class="fas fa-archive"></i>
                             <span>Archive</span>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="financial.html">
+                    <li <?php echo $active_page == 'financial' ? 'class="active"' : ''; ?>>
+                        <a href="financial.php">
                             <i class="fas fa-hand-holding-usd"></i>
                             <span>Financial</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="settings.html">
+                    <li <?php echo $active_page == 'settings' ? 'class="active"' : ''; ?>>
+                        <a href="settings.php">
                             <i class="fas fa-cog"></i>
                             <span>Settings</span>
                         </a>
@@ -95,20 +93,13 @@
         <!-- /subnavbar-inner -->
     </div>
     <!-- /subnavbar -->
-    <div class="main">
-        <div class="main-inner">
-            <div class="container">
-                <div class="row">
+    <?php
 
+}
 
-                </div>
-                <!-- /row -->
-            </div>
-            <!-- /container -->
-        </div>
-        <!-- /main-inner -->
-    </div>
-    <!-- /main -->
+function extra_bottom()
+{
+    ?>
     <div class="extra">
         <div class="extra-inner">
             <div class="container">
@@ -194,6 +185,12 @@
         <!-- /extra-inner -->
     </div>
     <!-- /extra -->
+    <?php
+
+}
+function admin_page_footer()
+{
+    ?>
     <div class="footer">
         <div class="footer-inner">
             <div class="container">
@@ -209,121 +206,6 @@
         <!-- /footer-inner -->
     </div>
     <!-- /footer -->
-    <!-- Le javascript
-================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-1.7.2.min.js"></script>
-    <script src="js/excanvas.min.js"></script>
-    <script src="js/chart.min.js" type="text/javascript"></script>
-    <script src="js/bootstrap.js"></script>
-    <script language="javascript" type="text/javascript" src="js/full-calendar/fullcalendar.min.js"></script>
+    <?php
 
-    <script src="js/base.js"></script>
-    <script>
-        var lineChartData = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [{
-                fillColor: "rgba(220,220,220,0.5)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                data: [65, 59, 90, 81, 56, 55, 40]
-            }, {
-                fillColor: "rgba(151,187,205,0.5)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                data: [28, 48, 40, 19, 96, 27, 100]
-            }]
-
-        }
-
-        var myLine = new Chart(document.getElementById("area-chart").getContext("2d")).Line(lineChartData);
-
-
-        var barChartData = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [{
-                fillColor: "rgba(220,220,220,0.5)",
-                strokeColor: "rgba(220,220,220,1)",
-                data: [65, 59, 90, 81, 56, 55, 40]
-            }, {
-                fillColor: "rgba(151,187,205,0.5)",
-                strokeColor: "rgba(151,187,205,1)",
-                data: [28, 48, 40, 19, 96, 27, 100]
-            }]
-
-        }
-
-        $(document).ready(function() {
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
-            var calendar = $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                selectable: true,
-                selectHelper: true,
-                select: function(start, end, allDay) {
-                    var title = prompt('Event Title:');
-                    if (title) {
-                        calendar.fullCalendar('renderEvent', {
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay
-                            },
-                            true // make the event "stick"
-                        );
-                    }
-                    calendar.fullCalendar('unselect');
-                },
-                editable: true,
-                events: [{
-                    title: 'All Day Event',
-                    start: new Date(y, m, 1)
-                }, {
-                    title: 'Long Event',
-                    start: new Date(y, m, d + 5),
-                    end: new Date(y, m, d + 7)
-                }, {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: new Date(y, m, d - 3, 16, 0),
-                    allDay: false
-                }, {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: new Date(y, m, d + 4, 16, 0),
-                    allDay: false
-                }, {
-                    title: 'Meeting',
-                    start: new Date(y, m, d, 10, 30),
-                    allDay: false
-                }, {
-                    title: 'Lunch',
-                    start: new Date(y, m, d, 12, 0),
-                    end: new Date(y, m, d, 14, 0),
-                    allDay: false
-                }, {
-                    title: 'Birthday Party',
-                    start: new Date(y, m, d + 1, 19, 0),
-                    end: new Date(y, m, d + 1, 22, 30),
-                    allDay: false
-                }, {
-                    title: 'EGrappler.com',
-                    start: new Date(y, m, 28),
-                    end: new Date(y, m, 29),
-                    url: 'http://EGrappler.com/'
-                }]
-            });
-        });
-    </script>
-    <!-- /Calendar -->
-</body>
-
-</html>
+}
