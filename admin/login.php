@@ -21,7 +21,7 @@ if (count($_POST) > 0)
   
 <head>
     <meta charset="utf-8">
-    <title>Login - Bootstrap Admin Template</title>
+    <title>Admin - Login</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes"> 
@@ -70,12 +70,12 @@ if (count($_POST) > 0)
 				
 				<div class="field">
 					<label for="username">Username</label>
-					<input type="text" id="username" name="username" value="" placeholder="Username" class="login username-field" />
+					<input type="text" id="username" name="username" value="" placeholder="Username"  />
 				</div> <!-- /field -->
 				
 				<div class="field">
 					<label for="password">Password:</label>
-					<input type="password" id="password" name="password" value="" placeholder="Password" class="login password-field"/>
+					<input type="password" id="password" name="password" value="" placeholder="Password" />
                 </div> <!-- /password -->
                 <div class="field">
                     <label><input type="checkbox" name="remember" value="1" />Remember me</label>

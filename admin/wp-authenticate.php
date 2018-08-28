@@ -17,6 +17,9 @@ function authenticate()
     endif;
 
     wp_set_current_user($user->ID, $username);
+    if (!current_user_can('administrator')) :
+        return false;
+    endif;
 
     /*** SET PERMANENT COOKIE IF NEEDED ***/
     if ($_POST["remember"] == "1")
@@ -55,7 +58,7 @@ function init()
 
     /*** LOADING WORDPRESS LIBRARIES ***/
     define('WP_USE_THEMES', false);
-    require_once("../wp-load.php");
+    require_once(__DIR__."/../wp-load.php");
 }
 
 ?>

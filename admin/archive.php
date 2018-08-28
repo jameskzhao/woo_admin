@@ -5,7 +5,7 @@ require_once 'auth-header.php';
 <html lang="en">
 
 <head>
-    <?php header_libs('Archive');?>
+    <?php header_libs('Admin - Archive');?>
     <link href="css/pages/dashboard.css" rel="stylesheet">
     
 </head>

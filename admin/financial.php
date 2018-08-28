@@ -5,7 +5,7 @@ require_once 'auth-header.php';
 <html lang="en">
 
 <head>
-    <?php header_libs('Customers');?>
+    <?php header_libs('Admin - Financial');?>
     <link href="css/pages/dashboard.css" rel="stylesheet">
     
 </head>
