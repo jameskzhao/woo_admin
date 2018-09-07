@@ -227,378 +227,62 @@ $product_categories = get_terms('product_cat', $cat_args);
                         <div class="col-md-9">
                             <?php 
                                 foreach($product_categories as $category){
+                                    $thumbnail_id = get_woocommerce_term_meta( $category->term_id, 'thumbnail_id', true ); 
+                                    $image = wp_get_attachment_url( $thumbnail_id ); 
+                                    
                                     ?>
                                     <div id="<?php echo $category->name;?>" class="menu-category">
-                                        <div class="menu-category-title"><h2 class="title"><?php echo $category->name;?></h2></div>
+                                        <div class="menu-category-title">
+                                            <div class="bg-image"><img src="<?php echo $image;?>" alt=""></div>
+                                            <h2 class="title"><?php echo $category->name;?></h2>
+                                        </div>
+                                        <?php 
+                                        $args = array(
+                                            'post_type'      => 'product',
+                                            'posts_per_page' => -1,
+                                            'product_cat'    => $category->name,
+                                        );
+
+                                        $loop = new WP_Query( $args );
+
+                                        while ( $loop->have_posts() ) : $loop->the_post();
+                                            global $product;
+                                            
+                                            // echo '<br/>';
+                                            // echo '<br /><a href="'.get_permalink().'"><img src="'.my_get_the_product_thumbnail_url().'"> '.get_the_title().'</a>';
+                                            ?>
+                                            <div class="menu-item menu-list-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col-sm-2">
+                                                    <?php 
+                                                    $image_src = wp_get_attachment_image_src($product->image_id);
+                                                    if($image_src){
+                                                        
+                                                        echo '<img src="'.$image_src[0].'">';
+                                                    }
+                                                    ?>
+                                           
+                                                    </div>
+                                                    <div class="col-sm-5 mb-2 mb-sm-0">
+                                                        <h6 class="mb-0"><?php echo $product->name; ?></h6>
+                                                        <span class="text-muted text-sm"><?php echo $product->description;?></span>
+                                                    </div>
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <span class="text-md mr-4"> $<?php echo $product->regular_price; ?></span>
+                                                        <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php
+                                        endwhile;
+                                        ?>
+                                        
                                     </div>
                                     <?php
                                 }
                             ?>
                             
-                            <!-- Menu Category / Burgers -->
-                            <div id="Burgers" class="menu-category">
-                                <div class="menu-category-title">
-                                    <div class="bg-image"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/photos/menu-title-burgers.jpg" alt=""></div>
-                                    <h2 class="title">Burgers</h2>
-                                </div>
-                                <div class="menu-category-content">
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Beef Burger</h6>
-                                                <span class="text-muted text-sm">Beef, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Broccoli</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Chicken Burger</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Creste di Galli</h6>
-                                                <span class="text-muted text-sm">Pasta, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Menu Category / Pasta -->
-                            <div id="Pasta" class="menu-category">
-                                <div class="menu-category-title">
-                                    <div class="bg-image"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/photos/menu-title-pasta.jpg" alt=""></div>
-                                    <h2 class="title">Pasta</h2>
-                                </div>
-                                <div class="menu-category-content">
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Beef Burger</h6>
-                                                <span class="text-muted text-sm">Beef, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Broccoli</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Chicken Burger</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Creste di Galli</h6>
-                                                <span class="text-muted text-sm">Pasta, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Menu Category / Pizza -->
-                            <div id="Pizza" class="menu-category">
-                                <div class="menu-category-title">
-                                    <div class="bg-image"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/photos/menu-title-pizza.jpg" alt=""></div>
-                                    <h2 class="title">Pizza</h2>
-                                </div>
-                                <div class="menu-category-content">
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Beef Burger</h6>
-                                                <span class="text-muted text-sm">Beef, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Broccoli</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Chicken Burger</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Creste di Galli</h6>
-                                                <span class="text-muted text-sm">Pasta, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Menu Category / Sushi -->
-                            <div id="Sushi" class="menu-category">
-                                <div class="menu-category-title">
-                                    <div class="bg-image"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/photos/menu-title-sushi.jpg" alt=""></div>
-                                    <h2 class="title">Sushi</h2>
-                                </div>
-                                <div class="menu-category-content">
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Beef Burger</h6>
-                                                <span class="text-muted text-sm">Beef, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Broccoli</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Chicken Burger</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Creste di Galli</h6>
-                                                <span class="text-muted text-sm">Pasta, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Menu Category / Desserts -->
-                            <div id="Desserts" class="menu-category">
-                                <div class="menu-category-title">
-                                    <div class="bg-image"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/photos/menu-title-desserts.jpg" alt=""></div>
-                                    <h2 class="title">Desserts</h2>
-                                </div>
-                                <div class="menu-category-content">
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Beef Burger</h6>
-                                                <span class="text-muted text-sm">Beef, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Broccoli</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Chicken Burger</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Creste di Galli</h6>
-                                                <span class="text-muted text-sm">Pasta, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Menu Category / Drinks -->
-                            <div id="Drinks" class="menu-category">
-                                <div class="menu-category-title">
-                                    <div class="bg-image"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/photos/menu-title-drinks.jpg" alt=""></div>
-                                    <h2 class="title">Drinks</h2>
-                                </div>
-                                <div class="menu-category-content">
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Beef Burger</h6>
-                                                <span class="text-muted text-sm">Beef, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Broccoli</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Chicken Burger</h6>
-                                                <span class="text-muted text-sm">Chicken, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $11.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Menu Item -->
-                                    <div class="menu-item menu-list-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-6 mb-2 mb-sm-0">
-                                                <h6 class="mb-0">Creste di Galli</h6>
-                                                <span class="text-muted text-sm">Pasta, cheese, potato, onion, fries</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm-right">
-                                                <span class="text-md mr-4"><span class="text-muted">from</span> $9.00</span>
-                                                <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                            </div>
-                                        </div>
-                                    </div>
+                            
                                 </div>
                             </div>
                         </div>
