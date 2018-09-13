@@ -18,7 +18,6 @@
 
 defined('ABSPATH') || exit;
 
-
 $orderby = 'name';
 $order = 'asc';
 $hide_empty = true;
@@ -33,77 +32,85 @@ get_header();
 ?>
         <!-- Content -->
         <div id="content">
-
-            <!-- Page Title -->
-            <div class="page-title bg-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 push-lg-4">
-                            <h1 class="mb-0">Menu List</h1>
-                            <h4 class="text-muted mb-0">Some informations about our restaurant</h4>
+            <!-- Section bg image -->
+            <section id="bg-image" class="section section-lg dark bg-dark">
+                <!-- BG Image -->
+                <div class="bg-image bg-parallax skrollable skrollable-between" data-top-bottom="background-position-y: 30%" data-bottom-top="background-position-y: 70%" style="background-image: url('http://westernlake.ca/wp-content/uploads/2015/07/fried_prawn_spring_rolls.jpg-e1439160997647.jpg'); background-position-y: 44.8024%;">
+                    <img src="http://westernlake.ca/wp-content/uploads/2015/07/fried_prawn_spring_rolls.jpg-e1439160997647.jpg" alt="" style="display: none;">
+                </div>
+                <div class="container text-center">
+                    <div class="col-lg-8 push-lg-2">
+                        <h2 class="mb-3">Would you like to visit Us?</h2>
+                        <h5 class="text-muted">Book a table even right now or make an online order!</h5>
+                        <a href="#order-online" class="btn btn-primary">
+                            <span>Order Online</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <section id="order-online">
+                <!-- Page Title -->
+                <div class="page-title bg-light">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 push-lg-4">
+                                <h1 class="mb-0">Menu List</h1>
+                                <h4 class="text-muted mb-0">Some informations about our restaurant</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                <div class="container">
+                <!-- Page Content -->
+                <div class="page-content">
                     <div class="row no-gutters">
                         <div class="col-md-3">
                             <!-- Menu Navigation -->
                             <nav id="menu-navigation" class="stick-to-content" data-local-scroll>
                                 <ul class="nav nav-menu bg-dark dark">
-                                    <?php 
-                                    foreach($product_categories as $category){
-                                        echo '<li><a href="#'.$category->name.'">'.$category->name.'</a></li>';
+                                    <?php
+                                    foreach ($product_categories as $category) {
+                                        echo '<li><a href="#' . $category->name . '">' . $category->name . '</a></li>';
                                     }
                                     ?>
                                 </ul>
                             </nav>
                         </div>
                         <div class="col-md-9">
-                            <?php 
-                                foreach($product_categories as $category){
-                                    $thumbnail_id = get_woocommerce_term_meta( $category->term_id, 'thumbnail_id', true ); 
-                                    $image = wp_get_attachment_url( $thumbnail_id ); 
-                                    
+                            <?php
+                                foreach ($product_categories as $category) {
+                                    $thumbnail_id = get_woocommerce_term_meta($category->term_id, 'thumbnail_id', true);
+                                    $image = wp_get_attachment_url($thumbnail_id);
                                     ?>
-                                    <div id="<?php echo $category->name;?>" class="menu-category">
+                                    <div id="<?php echo $category->name; ?>" class="menu-category">
                                         <div class="menu-category-title">
-                                            <div class="bg-image"><img src="<?php echo $image;?>" alt=""></div>
-                                            <h2 class="title"><?php echo $category->name;?></h2>
+                                            <div class="bg-image"><img src="<?php echo $image; ?>" alt=""></div>
+                                            <h2 class="title"><?php echo $category->name; ?></h2>
                                         </div>
-                                        <?php 
+                                        <?php
                                         $args = array(
-                                            'post_type'      => 'product',
-                                            'posts_per_page' => -1,
-                                            'product_cat'    => $category->name,
+                                                'post_type' => 'product',
+                                                'posts_per_page' => -1,
+                                                'product_cat' => $category->name,
                                         );
+                                        $loop = new WP_Query($args);
 
-                                        $loop = new WP_Query( $args );
-
-                                        while ( $loop->have_posts() ) : $loop->the_post();
+                                        while ($loop->have_posts()): $loop->the_post();
                                             global $product;
-                                            
-                                            // echo '<br/>';
-                                            // echo '<br /><a href="'.get_permalink().'"><img src="'.my_get_the_product_thumbnail_url().'"> '.get_the_title().'</a>';
                                             ?>
                                             <div class="menu-item menu-list-item">
                                                 <div class="row align-items-center">
                                                     <div class="col-sm-2">
-                                                    <?php 
-                                                    $image_src = wp_get_attachment_image_src($product->image_id);
-                                                    if($image_src){
-                                                        
-                                                        echo '<img src="'.$image_src[0].'">';
-                                                    }
-                                                    ?>
-                                           
+                                                        <?php
+                                                        $image_src = wp_get_attachment_image_src($product->image_id);
+                                                        if ($image_src) {
+                                                            echo '<img src="' . $image_src[0] . '">';
+                                                        }
+                                                        ?>
                                                     </div>
                                                     <div class="col-sm-5 mb-2 mb-sm-0">
                                                         <h6 class="mb-0"><?php echo $product->name; ?></h6>
-                                                        <span class="text-muted text-sm"><?php echo $product->description;?></span>
+                                                        <span class="text-muted text-sm"><?php echo $product->description; ?></span>
                                                     </div>
                                                     <div class="col-sm-5 text-sm-right">
                                                         <span class="text-md mr-4"> $<?php echo $product->regular_price; ?></span>
@@ -111,22 +118,24 @@ get_header();
                                                     </div>
                                                 </div>
                                             </div>
-                                            <?php
-                                        endwhile;
-                                        ?>
-                                        
+                                            <!-- menu-item -->
+                                        <?php endwhile; ?>
                                     </div>
+                                    <!-- menu-category -->
                                     <?php
                                 }
-                            ?>
-                            
-                            
-                                </div>
-                            </div>
+                                // end of foreach menu category
+                                ?>
+
+
                         </div>
+                        <!-- col-md-9 -->
                     </div>
+                    <!-- row no-gutters -->
                 </div>
-            </div>
+                <!-- page-content -->
+            </section>
+            
             <!-- Modal / Product -->
             <div class="modal fade" id="productModal" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -254,8 +263,8 @@ get_header();
                     </div>
                 </div>
             </div>
-            
 
-    
+
+
 
     <?php get_footer();?>

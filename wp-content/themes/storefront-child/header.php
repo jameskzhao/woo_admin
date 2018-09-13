@@ -63,9 +63,6 @@
                                 ?>
                             </ul>
                         </nav>
-                        <div class="module left">
-                            <a href="menu-list-navigation.html" class="btn btn-outline-secondary"><span>Order</span></a>
-                        </div>
                     </div>
                     <div class="col-md-2">
                         <a href="#" class="module module-cart right" data-toggle="panel-cart">
@@ -96,6 +93,6 @@
             </a>
         </header>
         <!-- Header / End -->
-        <div class="container">
+        
 
         

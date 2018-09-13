@@ -4,8 +4,12 @@
     <div class="container">
         <!-- Footer 1st Row -->
         <div class="footer-first-row row">
-            <div class="col-lg-3 text-center">
-                <a href="index.html"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-light.svg" alt="" width="88" class="mt-5 mb-5"></a>
+            <div class="col-lg-3 text-left">
+            <h4>Western Lake Chinese Seafood Restaurant</h4>
+            4989 Victoria Dr
+            V5P 3T7 Vancouver
+            (604) 321-6862
+            info@westernlake.ca
             </div>
             <div class="col-lg-4 col-md-6">
                 <h5 class="text-muted">Latest news</h5>
@@ -51,7 +55,7 @@
         </div>
         <!-- Footer 2nd Row -->
         <div class="footer-second-row">
-            <span class="text-muted">Copyright Soup 2017©. Made with love by Suelo.</span>
+            <span class="text-muted">Copyright James Zhao <?php echo date('Y', time());?>©. Made with love by James Zhao.</span>
         </div>
     </div>
 
@@ -157,10 +161,11 @@
     <div id="body-overlay"></div>
 
     </div>
-</div>
-<!-- Container / End -->
-<!-- JS Plugins -->
-<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/jquery/dist/jquery.min.js"></script>
+
+    <!-- JS Plugins -->
+    <script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/jquery/dist/jquery.min.js"></script>
+    
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBqnyk9JGW2XOblOw26-C48h1djj18imo"></script>
     <script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/tether/dist/js/tether.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/slick-carousel/slick/slick.min.js"></script>
@@ -174,6 +179,13 @@
     <script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/animsition/dist/js/animsition.min.js"></script>
     <!-- JS Core -->
     <script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/core.js"></script>
+    <script>
+        $(document).ready(function(){
+            initMap();
+        });
+    </script>
+
+
 </body>
 
 </html>
