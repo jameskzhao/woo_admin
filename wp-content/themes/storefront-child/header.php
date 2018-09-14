@@ -5,6 +5,9 @@
  *
  * @package storefront
  */
+global $pickup_hours;
+$pickup_hours = get_hours('pickup');
+
 ?>
 <!doctype html>
 <html <?php language_attributes();?>>
@@ -23,6 +26,7 @@
     <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/font-awesome/css/font-awesome.min.css" />
     <!-- CSS Theme -->
     <link id="theme" rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/css/themes/theme-beige.min.css" />
+    <link id="theme" rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/style.css" />
 </head>
 <body <?php body_class();?>>
     <!-- Body Wrapper -->
@@ -43,24 +47,11 @@
                         <!-- Navigation -->
                         <nav class="module module-navigation left mr-4">
                             <ul id="nav-main" class="nav nav-main">
-                                <?php 
-                                $menu_array = get_header_nav('primary');
-                                if($menu_array){
-                                    foreach($menu_array as $single_menu_obj){
-                                        if($single_menu_obj->wpse_children){
-                                            echo '<li class="has-dropdown"><a href="#">'.$single_menu_obj->title.'</a>';
-                                            echo '<div class="dropdown-container"><ul>';
-                                            foreach($single_menu_obj->wpse_children as $single_submenu){
-                                                echo '<li><a href="'.$single_submenu->url.'">'.$single_submenu->title.'</a></li>';
-                                            }
-                                            echo '</ul></div>';
-                                            echo '</li>';
-                                        }else{
-                                            echo '<li><a href="'.$single_menu_obj->url.'">'.$single_menu_obj->title.'</a></li>';
-                                        }
-                                    }
-                                }
-                                ?>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="/shop">Order Online</a></li>
+                                <li><a href="#map">About Us</a></li>
+                                <li><a href="#footer">Contact</a></li>
+                                <li><a href="#footer"><i class="fa fa-user"></i>&nbsp;Login</a></li>
                             </ul>
                         </nav>
                     </div>

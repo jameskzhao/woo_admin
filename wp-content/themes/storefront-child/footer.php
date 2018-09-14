@@ -5,30 +5,28 @@
         <!-- Footer 1st Row -->
         <div class="footer-first-row row">
             <div class="col-lg-3 text-left">
-            <h4>Western Lake Chinese Seafood Restaurant</h4>
-            4989 Victoria Dr
-            V5P 3T7 Vancouver
-            (604) 321-6862
-            info@westernlake.ca
+                <h5 class="text-muted">Western Lake Chinese Seafood Restaurant</h5>
+                4989 Victoria Dr <br>
+                V5P 3T7 Vancouver <br>
+                (604) 321-6862 <br>
+                info@westernlake.ca
             </div>
-            <div class="col-lg-4 col-md-6">
-                <h5 class="text-muted">Latest news</h5>
-                <ul class="list-posts">
-                    <li>
-                        <a href="blog-post.html" class="title">How to create effective webdeisign?</a>
-                        <span class="date">February 14, 2015</span>
-                    </li>
-                    <li>
-                        <a href="blog-post.html" class="title">Awesome weekend in Polish mountains!</a>
-                        <span class="date">February 14, 2015</span>
-                    </li>
-                    <li>
-                        <a href="blog-post.html" class="title">How to create effective webdeisign?</a>
-                        <span class="date">February 14, 2015</span>
-                    </li>
-                </ul>
+            <div class="col-lg-4">
+                <table class="table table-borderless">
+                    <tr>
+                        <td><h5 class="text-muted">Pick up</h5></td>
+                    </tr>
+                    <?php 
+                    global $pickup_hours;
+                    $weekdays = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+                    for ($i = 0; $i < count($weekdays); $i++) {
+                        echo '<tr><td><strong>'.$weekdays[$i].': </strong></td><td>&nbsp;</td><td>'.$pickup_hours[$i]->start_hour.' - '.$pickup_hours[$i]->close_start_hour.'</td></tr>';
+                        echo '<tr><td></td><td>&nbsp;</td><td>'.$pickup_hours[$i]->close_end_hour.' - '.$pickup_hours[$i]->end_hour.'</td></tr>';
+                    }
+                    ?>
+                </table>
             </div>
-            <div class="col-lg-5 col-md-6">
+            <div class="col-lg-5">
                 <h5 class="text-muted">Subscribe Us!</h5>
                 <!-- MailChimp Form -->
                 <form action="//suelo.us12.list-manage.com/subscribe/post-json?u=ed47dbfe167d906f2bc46a01b&amp;id=24ac8a22ad" id="sign-up-form" class="sign-up-form validate-form mb-3" method="POST">
@@ -55,7 +53,7 @@
         </div>
         <!-- Footer 2nd Row -->
         <div class="footer-second-row">
-            <span class="text-muted">Copyright James Zhao <?php echo date('Y', time());?>©. Made with love by James Zhao.</span>
+            <span class="text-muted">Copyright James Zhao <?php echo date('Y', time()); ?>©. Made with love by James Zhao.</span>
         </div>
     </div>
 
