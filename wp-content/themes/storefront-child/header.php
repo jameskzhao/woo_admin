@@ -7,7 +7,6 @@
  */
 global $pickup_hours;
 $pickup_hours = get_hours('pickup');
-
 ?>
 <!doctype html>
 <html <?php language_attributes();?>>

@@ -31,23 +31,7 @@ $product_categories = get_terms('product_cat', $cat_args);
 get_header();
 ?>
         <!-- Content -->
-        <div id="content">
-            <!-- Section bg image -->
-            <section id="bg-image" class="section section-lg dark bg-dark">
-                <!-- BG Image -->
-                <div class="bg-image bg-parallax skrollable skrollable-between" data-top-bottom="background-position-y: 30%" data-bottom-top="background-position-y: 70%" style="background-image: url('http://westernlake.ca/wp-content/uploads/2015/07/fried_prawn_spring_rolls.jpg-e1439160997647.jpg'); background-position-y: 44.8024%;">
-                    <img src="http://westernlake.ca/wp-content/uploads/2015/07/fried_prawn_spring_rolls.jpg-e1439160997647.jpg" alt="" style="display: none;">
-                </div>
-                <div class="container text-center">
-                    <div class="col-lg-8 push-lg-2">
-                        <h2 class="mb-3">Would you like to visit Us?</h2>
-                        <h5 class="text-muted">Book a table even right now or make an online order!</h5>
-                        <a href="#order-online" class="btn btn-primary">
-                            <span>Order Online</span>
-                        </a>
-                    </div>
-                </div>
-            </section>
+        <div id="content" class="container">
             <section id="order-online">
                 <!-- Page Title -->
                 <div class="page-title bg-light">
@@ -78,6 +62,7 @@ get_header();
                         </div>
                         <div class="col-md-9">
                             <?php
+                                $products_array = array(); 
                                 foreach ($product_categories as $category) {
                                     $thumbnail_id = get_woocommerce_term_meta($category->term_id, 'thumbnail_id', true);
                                     $image = wp_get_attachment_url($thumbnail_id);
@@ -97,6 +82,10 @@ get_header();
 
                                         while ($loop->have_posts()): $loop->the_post();
                                             global $product;
+                                            $current_product_data = $product->get_data();
+                                            $current_product_data['variation'] = get_variation_products($current_product_data['id']);
+                                            array_push($products_array, $current_product_data);
+                                            
                                             ?>
                                             <div class="menu-item menu-list-item">
                                                 <div class="row align-items-center">
@@ -113,7 +102,7 @@ get_header();
                                                         <span class="text-muted text-sm"><?php echo $product->description; ?></span>
                                                     </div>
                                                     <div class="col-sm-5 text-sm-right">
-                                                        <span class="text-md mr-4"> $<?php echo $product->regular_price; ?></span>
+                                                        <span class="text-md mr-4"> $<?php echo $product->price; ?></span>
                                                         <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
                                                     </div>
                                                 </div>
@@ -268,3 +257,9 @@ get_header();
 
 
     <?php get_footer();?>
+    <script>
+    var products = '<?php echo addslashes(json_encode($products_array));?>';
+    console.log(products);
+    </script>
+                            </body>
+                            </html>

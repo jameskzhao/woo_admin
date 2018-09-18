@@ -53,7 +53,7 @@
         </div>
         <!-- Footer 2nd Row -->
         <div class="footer-second-row">
-            <span class="text-muted">Copyright James Zhao <?php echo date('Y', time()); ?>©. Made with love by James Zhao.</span>
+            <span class="text-muted">© Copyright Western Lake Chinese Seafood Restaurant <?php echo date('Y', time()); ?>. Made with love by James Zhao.</span>
         </div>
     </div>
 
@@ -177,13 +177,3 @@
     <script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/animsition/dist/js/animsition.min.js"></script>
     <!-- JS Core -->
     <script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/core.js"></script>
-    <script>
-        $(document).ready(function(){
-            initMap();
-        });
-    </script>
-
-
-</body>
-
-</html>

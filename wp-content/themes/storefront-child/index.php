@@ -20,7 +20,6 @@ $hours_today = find_hours_by_day($pickup_hours, $day_of_week);
 		<div class="container text-center">
 			<div class="col-lg-8 push-lg-2">
 				<h2 class="mb-3">Would you like to visit Us?</h2>
-				<h5 class="text-muted">Book a table even right now or make an online order!</h5>
 				<a href="#order-online" class="btn btn-primary">
 					<span>Order Online</span>
 				</a>
@@ -82,3 +81,11 @@ function initMap() {
 <?php
 
 get_footer();
+?>
+<script>
+$(document).ready(function(){
+	initMap();
+});
+</script>
+</body>
+</html>

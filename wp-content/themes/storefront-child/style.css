@@ -16,3 +16,7 @@ table.table-borderless td {
     border: none;
     padding: 0.5em;
 }
+
+#bg-image {
+    padding-top: 12em;
+}

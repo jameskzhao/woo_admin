@@ -4,13 +4,44 @@ function get_hours($type='pickup'){
     $query = "SELECT * FROM store_time WHERE type = '{$type}'";
     if($query_results = $wpdb->get_results($query)){
         foreach($query_results as $single_result){
-            $single_result->start_hour = date('h:i', strtotime($single_result->start_hour));
-            $single_result->end_hour = date('h:i', strtotime($single_result->end_hour));
-            $single_result->close_start_hour = date('h:i', strtotime($single_result->close_start_hour));
-            $single_result->close_end_hour = date('h:i', strtotime($single_result->close_end_hour));
+            $single_result->start_hour = date('H:i', strtotime($single_result->start_hour));
+            $single_result->end_hour = date('H:i', strtotime($single_result->end_hour));
+            $single_result->close_start_hour = date('H:i', strtotime($single_result->close_start_hour));
+            $single_result->close_end_hour = date('H:i', strtotime($single_result->close_end_hour));
         }
         return $query_results;
     }
+}
+function get_variation_products($product_id){
+    $args = array(
+        'post_type'     => 'product_variation',
+        'post_status'   => array( 'private', 'publish' ),
+        'numberposts'   => -1,
+        'orderby'       => 'menu_order',
+        'order'         => 'asc',
+        'post_parent'   => $product_id // get parent post-ID
+    );
+    $variations = get_posts( $args );
+    $return_array = array();
+    foreach ( $variations as $variation ) {
+    
+        // get variation ID
+        $variation_ID = $variation->ID;
+    
+        // get variations meta
+        $product_variation = new WC_Product_Variation( $variation_ID );
+    
+        // // get variation featured image
+        // $variation_image = $product_variation->get_image();
+    
+        // // get variation price
+        // $variation_price = $product_variation->get_price_html();
+    
+        // // to get variation meta, simply use get_post_meta() WP functions and you're done 
+        // // ... do your thing here
+        array_push($return_array, $product_variation->get_data());
+    }
+    return $return_array;
 }
 function find_hours_by_day($pickup_hours, $weekday){
 	foreach($pickup_hours as $hours){
