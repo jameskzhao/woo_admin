@@ -1,5 +1,6 @@
 <?php
 require_once 'auth-header.php';
+require_once 'woo-header.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +44,7 @@ require_once 'auth-header.php';
                                 <?php require_once('html/setting-hours.php');?>
                             </div>
                             <div class="tab-pane " id="products">
-                                products
+                                <?php require_once('html/setting-products.php');?>
                             </div>
                             <div class="tab-pane " id="promos">
                                 promos

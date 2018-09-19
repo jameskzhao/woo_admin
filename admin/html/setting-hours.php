@@ -12,7 +12,7 @@ function find_hours_of_weekday($hours_array, $weekday)
         }
     }
 }
-function get_hours($type)
+function get_store_hours($type)
 {
     global $wpdb;
     $query = "SELECT weekday, open, HOUR(start_hour) AS open_from_hr, MINUTE(start_hour) AS open_from_min, HOUR(end_hour) AS open_till_hr, MINUTE(end_hour) AS open_till_min, HOUR(close_start_hour) AS close_from_hr, MINUTE(close_start_hour) AS close_from_min, HOUR(close_end_hour) AS close_till_hr, MINUTE(close_end_hour) AS close_till_min FROM store_time WHERE type = '$type'";
