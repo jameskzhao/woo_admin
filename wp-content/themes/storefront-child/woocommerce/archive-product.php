@@ -32,99 +32,99 @@ get_header();
 ?>
         <!-- Content -->
         <div id="content" class="container">
-            <section id="order-online">
-                <!-- Page Title -->
-                <div class="page-title bg-light">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8 push-lg-4">
-                                <h1 class="mb-0">Menu List</h1>
-                                <h4 class="text-muted mb-0">Some informations about our restaurant</h4>
-                            </div>
+            <!-- Page Title -->
+            <div class="page-title bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 push-lg-4">
+                            <h1 class="mb-0">Menu List</h1>
+                            <h4 class="text-muted mb-0">Some informations about our restaurant</h4>
                         </div>
                     </div>
                 </div>
-
-                <!-- Page Content -->
-                <div class="page-content">
-                    <div class="row no-gutters">
-                        <div class="col-md-3">
-                            <!-- Menu Navigation -->
-                            <nav id="menu-navigation" class="stick-to-content" data-local-scroll>
-                                <ul class="nav nav-menu bg-dark dark">
-                                    <?php
-                                    foreach ($product_categories as $category) {
-                                        echo '<li><a href="#' . $category->name . '">' . $category->name . '</a></li>';
-                                    }
-                                    ?>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="col-md-9">
-                            <?php
-                                $products_array = array(); 
+            </div>
+            <!-- Page Title END -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="row no-gutters">
+                    <div class="col-md-3">
+                        <!-- Menu Navigation -->
+                        <nav id="menu-navigation" class="stick-to-content" data-local-scroll>
+                            <ul class="nav nav-menu bg-dark dark">
+                                <?php
                                 foreach ($product_categories as $category) {
-                                    $thumbnail_id = get_woocommerce_term_meta($category->term_id, 'thumbnail_id', true);
-                                    $image = wp_get_attachment_url($thumbnail_id);
-                                    ?>
-                                    <div id="<?php echo $category->name; ?>" class="menu-category">
-                                        <div class="menu-category-title">
-                                            <div class="bg-image"><img src="<?php echo $image; ?>" alt=""></div>
-                                            <h2 class="title"><?php echo $category->name; ?></h2>
-                                        </div>
-                                        <?php
-                                        $args = array(
-                                                'post_type' => 'product',
-                                                'posts_per_page' => -1,
-                                                'product_cat' => $category->name,
-                                        );
-                                        $loop = new WP_Query($args);
-
-                                        while ($loop->have_posts()): $loop->the_post();
-                                            global $product;
-                                            $current_product_data = $product->get_data();
-                                            $current_product_data['variation'] = get_variation_products($current_product_data['id']);
-                                            array_push($products_array, $current_product_data);
-                                            
-                                            ?>
-                                            <div class="menu-item menu-list-item">
-                                                <div class="row align-items-center">
-                                                    <div class="col-sm-2">
-                                                        <?php
-                                                        $image_src = wp_get_attachment_image_src($product->image_id);
-                                                        if ($image_src) {
-                                                            echo '<img src="' . $image_src[0] . '">';
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                    <div class="col-sm-5 mb-2 mb-sm-0">
-                                                        <h6 class="mb-0"><?php echo $product->name; ?></h6>
-                                                        <span class="text-muted text-sm"><?php echo $product->description; ?></span>
-                                                    </div>
-                                                    <div class="col-sm-5 text-sm-right">
-                                                        <span class="text-md mr-4"> $<?php echo $product->price; ?></span>
-                                                        <button class="btn btn-outline-secondary btn-sm" data-target="#productModal" data-toggle="modal"><span>Add to cart</span></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- menu-item -->
-                                        <?php endwhile; ?>
-                                    </div>
-                                    <!-- menu-category -->
-                                    <?php
+                                    echo '<li><a href="#' . $category->name . '">' . $category->name . '</a></li>';
                                 }
-                                // end of foreach menu category
                                 ?>
-
-
-                        </div>
-                        <!-- col-md-9 -->
+                            </ul>
+                        </nav>
                     </div>
-                    <!-- row no-gutters -->
+                    <!-- col-md-3 end -->
+                    <div class="col-md-9">
+                        <?php
+                        $products_array = array();
+                        foreach ($product_categories as $category) {
+                            $thumbnail_id = get_woocommerce_term_meta($category->term_id, 'thumbnail_id', true);
+                            $image = wp_get_attachment_url($thumbnail_id);
+                            $args = array(
+                                'post_type' => 'product',
+                                'posts_per_page' => -1,
+                                'product_cat' => $category->name,
+                            );
+                            $loop = new WP_Query($args);
+                            ?>
+                            <div id="<?php echo $category->name; ?>" class="menu-category">
+                                <div class="menu-category-title">
+                                    <div class="bg-image"><img src="<?php echo $image; ?>" alt=""></div>
+                                    <h2 class="title"><?php echo $category->name; ?></h2>
+                                </div>
+                                <?php
+                                while ($loop->have_posts()): $loop->the_post();
+                                    global $product;
+                                    $current_product_data = $product->get_data();
+                                    $data_to_push = array(
+                                        'id' => $current_product_data['id'],
+                                        'name' => $current_product_data['name'],
+                                        'prize' => $current_product_data['price'],
+                                    );
+                                    $data_to_push['variation'] = get_variation_products($current_product_data['id']);
+                                    array_push($products_array, $data_to_push);
+                                    $image_src = wp_get_attachment_image_src($product->image_id);
+                                    ?>
+                                    <div class="menu-item menu-list-item">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-2">
+                                                <?php
+                                                    if ($image_src) {
+                                                        echo '<img src="' . $image_src[0] . '">';
+                                                    }
+                                                ?>
+                                            </div>
+                                            <!-- col-sm-2 end -->
+                                            <div class="col-sm-5 mb-2 mb-sm-0">
+                                                <h6 class="mb-0"><?php echo $product->name; ?></h6>
+                                                <span class="text-muted text-sm"><?php echo $product->description; ?></span>
+                                            </div>
+                                            <div class="col-sm-5 text-sm-right">
+                                                <span class="text-md mr-4"> $<?php echo $product->price; ?></span>
+                                                <button id="<?php echo $current_product_data['id'] ?>" class="btn btn-outline-secondary btn-sm add-to-cart"><span>Add to cart</span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- menu-item -->
+                                <?php endwhile;?>
+                            </div>
+                            <!-- menu-category -->
+                        <?php
+                        }
+                        // end of foreach menu category
+                        ?>
+                    </div>
+                    <!-- col-md-9 end -->
                 </div>
-                <!-- page-content -->
-            </section>
-            
+                <!-- row no-gutters -->
+            </div>
+            <!-- Page Content END -->
             <!-- Modal / Product -->
             <div class="modal fade" id="productModal" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -134,132 +134,66 @@ get_header();
                             <h4 class="modal-title">Specify your dish</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ti-close"></i></button>
                         </div>
-                        <div class="modal-product-details">
-                            <div class="row align-items-center">
-                                <div class="col-9">
-                                    <h6 class="mb-0">Boscaiola Pasta</h6>
-                                    <span class="text-muted">Pasta, Cheese, Tomatoes, Olives</span>
-                                </div>
-                                <div class="col-3 text-lg text-right">$9.00</div>
-                            </div>
-                        </div>
                         <div class="modal-body panel-details-container">
                             <!-- Panel Details / Size -->
                             <div class="panel-details">
                                 <h5 class="panel-details-title">
                                     <label class="custom-control custom-radio">
-                                    <input name="radio_title_size" type="radio" class="custom-control-input">
-                                    <span class="custom-control-indicator"></span>
-                                </label>
+                                        <input name="radio_title_size" type="radio" class="custom-control-input">
+                                        <span class="custom-control-indicator"><svg class="icon" x="0px" y="0px" viewBox="0 0 32 32"><path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path></svg></span>
+                                    </label>
                                     <a href="#panelDetailsSize" data-toggle="collapse">Size</a>
                                 </h5>
                                 <div id="panelDetailsSize" class="collapse show">
-                                    <div class="panel-details-content">
-                                        <div class="form-group">
-                                            <label class="custom-control custom-radio">
-                                            <input name="radio_size" type="radio" class="custom-control-input" checked>
-                                            <span class="custom-control-indicator"></span>
-                                            <span class="custom-control-description">Small - 100g ($9.99)</span>
-                                        </label>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="custom-control custom-radio">
-                                            <input name="radio_size" type="radio" class="custom-control-input">
-                                            <span class="custom-control-indicator"></span>
-                                            <span class="custom-control-description">Medium - 200g ($14.99)</span>
-                                        </label>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="custom-control custom-radio">
-                                            <input name="radio_size" type="radio" class="custom-control-input">
-                                            <span class="custom-control-indicator"></span>
-                                            <span class="custom-control-description">Large - 350g ($21.99)</span>
-                                        </label>
-                                        </div>
-                                    </div>
+                                    <div class="panel-details-content"></div>
                                 </div>
                             </div>
-                            <!-- Panel Details / Additions -->
-                            <div class="panel-details">
-                                <h5 class="panel-details-title">
-                                    <label class="custom-control custom-radio">
-                                    <input name="radio_title_additions" type="radio" class="custom-control-input">
-                                    <span class="custom-control-indicator"></span>
-                                </label>
-                                    <a href="#panelDetailsAdditions" data-toggle="collapse">Additions</a>
-                                </h5>
-                                <div id="panelDetailsAdditions" class="collapse">
-                                    <div class="panel-details-content">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-indicator"></span>
-                                                    <span class="custom-control-description">Tomato ($1.29)</span>
-                                                </label>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-indicator"></span>
-                                                    <span class="custom-control-description">Ham ($1.29)</span>
-                                                </label>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-indicator"></span>
-                                                    <span class="custom-control-description">Chicken ($1.29)</span>
-                                                </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-indicator"></span>
-                                                    <span class="custom-control-description">Cheese($1.29)</span>
-                                                </label>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-indicator"></span>
-                                                    <span class="custom-control-description">Bacon ($1.29)</span>
-                                                </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Panel Details / Other -->
-                            <div class="panel-details">
-                                <h5 class="panel-details-title">
-                                    <label class="custom-control custom-radio">
-                                    <input name="radio_title_other" type="radio" class="custom-control-input">
-                                    <span class="custom-control-indicator"></span>
-                                </label>
-                                    <a href="#panelDetailsOther" data-toggle="collapse">Other</a>
-                                </h5>
-                                <div id="panelDetailsOther" class="collapse">
-                                    <textarea cols="30" rows="4" class="form-control" placeholder="Put this any other informations..."></textarea>
-                                </div>
-                            </div>
+                        </div>
                         </div>
                         <button type="button" class="modal-btn btn btn-secondary btn-block btn-lg" data-dismiss="modal"><span>Add to Cart</span></button>
                     </div>
                 </div>
             </div>
-
-
-
-
+            <!-- Modal / Product END -->
     <?php get_footer();?>
     <script>
-    var products = '<?php echo addslashes(json_encode($products_array));?>';
-    console.log(products);
+    var products = JSON.parse('<?php echo addslashes(json_encode($products_array)); ?>');
+    $(document).ready(function(){
+        $(".add-to-cart").click(function(e){
+            var selectedProductId = this.id;
+            var productDetails = getProductDetails(this.id);
+            if(productDetails.variation.length>0){
+                console.log(productDetails.variation);
+                populateProductModal(productDetails);
+                
+            }else{
+                addToWooCart(selectedProductId);
+            }
+            
+        });
+    });
+    function populateProductModal(productDetails){
+        var variations = productDetails.variation;
+        if(variations.length>0){
+            $("#panelDetailsSize > .panel-details-content").empty();
+            for(var i=0; i<variations.length; i++){
+                if(variations[i].price > 0){
+                    $("#panelDetailsSize > .panel-details-content").append('<div class="form-group"><label class="custom-control custom-radio"><input name="radio_size" type="radio" class="custom-control-input"><span class="custom-control-indicator"><svg class="icon" x="0px" y="0px" viewBox="0 0 32 32"><path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path></svg></span><span class="custom-control-description">' + variations[i].name + ' ($' + variations[i].price + ')</span></label></div>');
+                }
+            }
+        }
+        $("#productModal").modal();
+    }
+    function addToWooCart(productId){
+        console.log('adding to cart. product id is ' + productId);
+    }
+    function getProductDetails(id){
+        for(var i=0; i<products.length; i++){
+            if(products[i].id==id){
+                return products[i];
+            }
+        }
+    }
     </script>
-                            </body>
-                            </html>
+</body>
+</html>
