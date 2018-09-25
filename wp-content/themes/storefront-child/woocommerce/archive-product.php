@@ -163,7 +163,6 @@ get_header();
             var selectedProductId = this.id;
             var productDetails = getProductDetails(this.id);
             if(productDetails.variation.length>0){
-                console.log(productDetails.variation);
                 populateProductModal(productDetails);
                 
             }else{
