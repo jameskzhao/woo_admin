@@ -30,22 +30,7 @@ $cat_args = array(
 $product_categories = get_terms('product_cat', $cat_args);
 get_header();
 ?>
-        <!-- Content -->
-        <div id="content" class="container">
-            <!-- Page Title -->
-            <div class="page-title bg-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 push-lg-4">
-                            <h1 class="mb-0">Menu List</h1>
-                            <h4 class="text-muted mb-0">Some informations about our restaurant</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Page Title END -->
-            <!-- Page Content -->
-            <div class="page-content">
+        
                 <div class="row no-gutters">
                     <div class="col-md-3">
                         <!-- Menu Navigation -->
@@ -79,25 +64,25 @@ get_header();
                                     <h2 class="title"><?php echo $category->name; ?></h2>
                                 </div>
                                 <?php
-                                while ($loop->have_posts()): $loop->the_post();
-                                    global $product;
-                                    $current_product_data = $product->get_data();
-                                    $data_to_push = array(
-                                        'id' => $current_product_data['id'],
-                                        'name' => $current_product_data['name'],
-                                        'prize' => $current_product_data['price'],
-                                    );
-                                    $data_to_push['variation'] = get_variation_products($current_product_data['id']);
-                                    array_push($products_array, $data_to_push);
-                                    $image_src = wp_get_attachment_image_src($product->image_id);
-                                    ?>
+                                while ($loop->have_posts()) : $loop->the_post();
+                                global $product;
+                                $current_product_data = $product->get_data();
+                                $data_to_push = array(
+                                    'id' => $current_product_data['id'],
+                                    'name' => $current_product_data['name'],
+                                    'prize' => $current_product_data['price'],
+                                );
+                                $data_to_push['variation'] = get_variation_products($current_product_data['id']);
+                                array_push($products_array, $data_to_push);
+                                $image_src = wp_get_attachment_image_src($product->image_id);
+                                ?>
                                     <div class="menu-item menu-list-item">
                                         <div class="row align-items-center">
                                             <div class="col-sm-2">
                                                 <?php
-                                                    if ($image_src) {
-                                                        echo '<img src="' . $image_src[0] . '">';
-                                                    }
+                                                if ($image_src) {
+                                                    echo '<img src="' . $image_src[0] . '">';
+                                                }
                                                 ?>
                                             </div>
                                             <!-- col-sm-2 end -->
@@ -107,24 +92,24 @@ get_header();
                                             </div>
                                             <div class="col-sm-5 text-sm-right">
                                                 <span class="text-md mr-4"> $<?php echo $product->price; ?></span>
-                                                <button id="<?php echo $current_product_data['id'] ?>" class="btn btn-outline-secondary btn-sm add-to-cart"><span>Add to cart</span></button>
+                                                <button id="<?php echo $current_product_data['id'] ?>" class="btn btn-outline-secondary btn-sm" onclick="addToCart(this.id, '<?php echo $product->add_to_cart_url(); ?>')"><span>Add to cart</span></button>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- menu-item -->
-                                <?php endwhile;?>
+                                <?php endwhile; ?>
                             </div>
                             <!-- menu-category -->
                         <?php
-                        }
+
+                    }
                         // end of foreach menu category
-                        ?>
+                    ?>
                     </div>
                     <!-- col-md-9 end -->
                 </div>
                 <!-- row no-gutters -->
-            </div>
-            <!-- Page Content END -->
+                <?php get_footer(); ?>        
             <!-- Modal / Product -->
             <div class="modal fade" id="productModal" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -155,22 +140,24 @@ get_header();
                 </div>
             </div>
             <!-- Modal / Product END -->
-    <?php get_footer();?>
+    
     <script>
     var products = JSON.parse('<?php echo addslashes(json_encode($products_array)); ?>');
     $(document).ready(function(){
         $(".add-to-cart").click(function(e){
-            var selectedProductId = this.id;
-            var productDetails = getProductDetails(this.id);
-            if(productDetails.variation.length>0){
-                populateProductModal(productDetails);
-                
-            }else{
-                addToWooCart(selectedProductId);
-            }
+            
             
         });
     });
+    function addToCart(id, url){
+        var selectedProductId = id;
+        var productDetails = getProductDetails(id);
+        if(productDetails.variation.length>0){
+            populateProductModal(productDetails);
+        }else{
+            addToWooCart(url);
+        }
+    }
     function populateProductModal(productDetails){
         var variations = productDetails.variation;
         if(variations.length>0){
@@ -183,8 +170,11 @@ get_header();
         }
         $("#productModal").modal();
     }
-    function addToWooCart(productId){
-        console.log('adding to cart. product id is ' + productId);
+    function addToWooCart(url){
+        console.log('adding to cart. url is '+url);
+        $.get(url,{},function(data){
+            location.reload();
+        },'');
     }
     function getProductDetails(id){
         for(var i=0; i<products.length; i++){

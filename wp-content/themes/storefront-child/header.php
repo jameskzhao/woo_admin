@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Displays all of the <head> section and everything up till <div id="content">
@@ -9,12 +10,12 @@ global $pickup_hours;
 $pickup_hours = get_hours('pickup');
 ?>
 <!doctype html>
-<html <?php language_attributes();?>>
+<html <?php language_attributes(); ?>>
 <head>
-    <meta charset="<?php bloginfo('charset');?>">
+    <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2.0">
     <link rel="profile" href="http://gmpg.org/xfn/11">
-    <link rel="pingback" href="<?php bloginfo('pingback_url');?>">
+    <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
     <!-- CSS Plugins -->
     <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/slick-carousel/slick/slick.css" />
@@ -27,7 +28,7 @@ $pickup_hours = get_hours('pickup');
     <link id="theme" rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/css/themes/theme-beige.min.css" />
     <link id="theme" rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/style.css" />
 </head>
-<body <?php body_class();?>>
+<body <?php body_class(); ?>>
     <!-- Body Wrapper -->
     <div id="body-wrapper" class="animsition">
         <!-- Header -->
@@ -38,7 +39,7 @@ $pickup_hours = get_hours('pickup');
                         <!-- Logo -->
                         <div class="module module-logo dark">
                             <a href="index.html">
-                                <img src="<?php echo get_stylesheet_directory_uri();?>/assets/img/logo-light.svg" alt="" width="88">
+                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-light.svg" alt="" width="88">
                             </a>
                         </div>
                     </div>
@@ -54,13 +55,18 @@ $pickup_hours = get_hours('pickup');
                             </ul>
                         </nav>
                     </div>
+                    <?php 
+                    global $woocommerce;
+                    $cart_total = $woocommerce->cart->get_cart_total();
+                    $cart_items_count = $woocommerce->cart->get_cart_contents_count();
+                    ?>
                     <div class="col-md-2">
                         <a href="#" class="module module-cart right" data-toggle="panel-cart">
                             <span class="cart-icon">
                             <i class="ti ti-shopping-cart"></i>
-                            <span class="notification">2</span>
+                            <?php echo $cart_items_count > 0 ? '<span class="notification">' . $cart_items_count . '</span>' : '' ?>
                             </span>
-                            <span class="cart-value">$32.98</span>
+                            <span class="cart-value"><?php echo $cart_total; ?></span>
                         </a>
                     </div>
                 </div>
@@ -74,15 +80,27 @@ $pickup_hours = get_hours('pickup');
             </div>
             <div class="module module-logo">
                 <a href="index.html">
-                    <img src="<?php echo get_stylesheet_directory_uri();?>/assets/img/logo-horizontal-dark.svg" alt="">
+                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-horizontal-dark.svg" alt="">
                 </a>
             </div>
             <a href="#" class="module module-cart" data-toggle="panel-cart">
                 <i class="ti ti-shopping-cart"></i>
-                <span class="notification">2</span>
+                <?php echo $cart_items_count > 0 ? '<span class="notification">' . $cart_items_count . '</span>' : '' ?>
             </a>
         </header>
         <!-- Header / End -->
-        
+        <!-- Content -->
+        <div id="content" class="container">
+            <!-- Page Title -->
+            <div class="page-title bg-light">
+                <div class="container">
+                    <div class="row">
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- Page Title END -->
+            <!-- Page Content -->
+            <div class="page-content">
 
         
