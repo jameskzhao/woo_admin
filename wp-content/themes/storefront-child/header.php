@@ -32,13 +32,13 @@ $pickup_hours = get_hours('pickup');
     <!-- Body Wrapper -->
     <div id="body-wrapper" class="animsition">
         <!-- Header -->
-        <header id="header" class="light">
+        <header id="header" class="dark">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
                         <!-- Logo -->
-                        <div class="module module-logo dark">
-                            <a href="index.html">
+                        <div class="module">
+                            <a href="/">
                                 <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-light.svg" alt="" width="88">
                             </a>
                         </div>
@@ -47,11 +47,11 @@ $pickup_hours = get_hours('pickup');
                         <!-- Navigation -->
                         <nav class="module module-navigation left mr-4">
                             <ul id="nav-main" class="nav nav-main">
-                                <li><a href="#">Home</a></li>
+                                <li><a href="<?php echo is_home()?'':'/'?>#">Home</a></li>
                                 <li><a href="/shop">Order Online</a></li>
-                                <li><a href="#map">About Us</a></li>
-                                <li><a href="#footer">Contact</a></li>
-                                <li><a href="#footer"><i class="fa fa-user"></i>&nbsp;Login</a></li>
+                                <li><a href="<?php echo is_home()?'':'/'?>#map">About Us</a></li>
+                                <li><a href="<?php echo is_home()?'':'/'?>#footer">Contact</a></li>
+                                <li><a href="<?php echo is_home()?'':'/'?>#footer"><i class="fa fa-user"></i>&nbsp;Login</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -79,7 +79,7 @@ $pickup_hours = get_hours('pickup');
                 <a href="#" id="nav-toggle" data-toggle="panel-mobile"><span></span><span></span><span></span><span></span></a>
             </div>
             <div class="module module-logo">
-                <a href="index.html">
+                <a href="/">
                     <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-horizontal-dark.svg" alt="">
                 </a>
             </div>
@@ -91,14 +91,6 @@ $pickup_hours = get_hours('pickup');
         <!-- Header / End -->
         <!-- Content -->
         <div id="content" class="container">
-            <!-- Page Title -->
-            <div class="page-title bg-light">
-                <div class="container">
-                    <div class="row">
-                        
-                    </div>
-                </div>
-            </div>
             <!-- Page Title END -->
             <!-- Page Content -->
             <div class="page-content">
