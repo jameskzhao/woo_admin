@@ -51,7 +51,14 @@ $pickup_hours = get_hours('pickup');
                                 <li><a href="/shop">Order Online</a></li>
                                 <li><a href="<?php echo is_home()?'':'/'?>#map">About Us</a></li>
                                 <li><a href="<?php echo is_home()?'':'/'?>#footer">Contact</a></li>
-                                <li><a href="<?php echo is_home()?'':'/'?>#footer"><i class="fa fa-user"></i>&nbsp;Login</a></li>
+                                <li>
+                                    
+                                    <?php if (is_user_logged_in()) { ?>
+                                        <a class="login_button" href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a>
+                                    <?php } else { ?>
+                                        <a href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-user"></i>&nbsp;Login</a>
+                                    <?php } ?>
+                                </li>
                             </ul>
                         </nav>
                     </div>
@@ -90,6 +97,30 @@ $pickup_hours = get_hours('pickup');
         </header>
         <!-- Header / End -->
         <!-- Content -->
+        <!-- Modal / Product -->
+        <div class="modal fade" id="loginModal" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-lg dark bg-dark">
+                        <div class="bg-image"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/photos/modal-add.jpg" alt=""></div>
+                        <h4 class="modal-title">Site Login</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ti-close"></i></button>
+                    </div>
+                    <form id="login" action="login" method="post">
+                        <div class="modal-body panel-details-container">
+                            <label for="username">Username</label>
+                            <input id="username" type="text" name="username" class="form-control">
+                            <label for="password">Password</label>
+                            <input id="password" type="password" name="password" class="form-control">
+                            <a class="lost" href="<?php echo wp_lostpassword_url(); ?>">Lost your password?</a>
+                            <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+                        </div>
+                        <button type="submit" class="modal-btn btn btn-secondary btn-block btn-lg" data-dismiss="modal"><span>Login</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal / Product END -->
         <div id="content" class="container">
             <!-- Page Title END -->
             <!-- Page Content -->
