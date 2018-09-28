@@ -8,6 +8,17 @@
  */
 global $pickup_hours;
 $pickup_hours = get_hours('pickup');
+$username = htmlspecialchars($_POST["username"]);
+$password = htmlspecialchars($_POST["password"]);
+if($username && $password){
+    $user = get_user_by('login', $username);
+    /*** COMPARE FORM PASSWORD WITH WORDPRESS PASSWORD ***/
+    if (!wp_check_password($password, $user->data->user_pass, $user->ID)) :
+        return false;
+    endif;
+    wp_set_current_user($user->ID, $username);
+}
+
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -47,18 +58,26 @@ $pickup_hours = get_hours('pickup');
                         <!-- Navigation -->
                         <nav class="module module-navigation left mr-4">
                             <ul id="nav-main" class="nav nav-main">
-                                <li><a href="<?php echo is_home()?'':'/'?>#">Home</a></li>
+                                <li><a href="<?php echo is_home() ? '' : '/' ?>#">Home</a></li>
                                 <li><a href="/shop">Order Online</a></li>
-                                <li><a href="<?php echo is_home()?'':'/'?>#map">About Us</a></li>
-                                <li><a href="<?php echo is_home()?'':'/'?>#footer">Contact</a></li>
-                                <li>
-                                    
-                                    <?php if (is_user_logged_in()) { ?>
-                                        <a class="login_button" href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a>
-                                    <?php } else { ?>
-                                        <a href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-user"></i>&nbsp;Login</a>
-                                    <?php } ?>
-                                </li>
+                                <li><a href="<?php echo is_home() ? '' : '/' ?>#map">About Us</a></li>
+                                <li><a href="<?php echo is_home() ? '' : '/' ?>#footer">Contact</a></li>
+                                <?php if (is_user_logged_in()) { 
+                                    $current_user = wp_get_current_user();
+                                    ?>
+                                    <li class="has-dropdown">
+                                        <a href="#"><?php echo $current_user->display_name;?></a>
+                                        <div class="dropdown-container">
+                                            <ul>
+                                                <li><a class="login_button" href="<?php echo wp_logout_url(home_url()); ?>">Logout</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                <?php 
+                                } else { ?>
+                                    <li><a href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-user"></i>&nbsp;Login</a></li>
+                                    <?php 
+                                } ?>
                             </ul>
                         </nav>
                     </div>
@@ -106,16 +125,15 @@ $pickup_hours = get_hours('pickup');
                         <h4 class="modal-title">Site Login</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ti-close"></i></button>
                     </div>
-                    <form id="login" action="login" method="post">
+                    <form id="login" action="" method="post">
                         <div class="modal-body panel-details-container">
                             <label for="username">Username</label>
                             <input id="username" type="text" name="username" class="form-control">
                             <label for="password">Password</label>
                             <input id="password" type="password" name="password" class="form-control">
                             <a class="lost" href="<?php echo wp_lostpassword_url(); ?>">Lost your password?</a>
-                            <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
                         </div>
-                        <button type="submit" class="modal-btn btn btn-secondary btn-block btn-lg" data-dismiss="modal"><span>Login</span></button>
+                        <button type="submit" class="modal-btn btn btn-secondary btn-block btn-lg"><span>Login</span></button>
                     </form>
                 </div>
             </div>

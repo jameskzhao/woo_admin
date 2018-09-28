@@ -13,37 +13,38 @@
     <div class="panel-cart-content">
         <table class="table-cart">
             <?php 
-                global $woocommerce;
-                $items = $woocommerce->cart->get_cart();
-                foreach ($items as $item => $values) {
-	                $_product = wc_get_product($values['data']->get_id());
-	            ?>
+            global $woocommerce;
+            $items = $woocommerce->cart->get_cart();
+            foreach ($items as $item => $values) {
+                $_product = wc_get_product($values['data']->get_id());
+                ?>
                 <tr>
-                    <td class="title"><span class="name"><?php echo $_product->get_title();?></span></td>
-                    <td class="price"><?php echo get_post_meta($values['product_id'], '_price', true);?></td>
-                    <td class="quantity">x<?php echo $values['quantity'];?></td>
+                    <td class="title"><span class="name"><?php echo $_product->get_title(); ?></span></td>
+                    <td class="price"><?php echo get_post_meta($values['product_id'], '_price', true); ?></td>
+                    <td class="quantity">x<?php echo $values['quantity']; ?></td>
                     <td class="actions"><a href="#" class="action-icon"><i class="ti ti-close"></i></a></td>
                 </tr>
                 <?php
-                }
+
+            }
             ?>
         </table>
         <div class="cart-summary">
             <?php 
-            
+
             ?>
             <div class="row">
                 <div class="col-7 text-right text-muted">Order total:</div>
-                <div class="col-5"><strong><?php echo $woocommerce->cart->get_cart_subtotal();?></strong></div>
+                <div class="col-5"><strong><?php echo $woocommerce->cart->get_cart_subtotal(); ?></strong></div>
             </div>
             <div class="row">
                 <div class="col-7 text-right text-muted">Tax:</div>
-                <div class="col-5"><strong><?php echo $woocommerce->cart->get_cart_tax();?></strong></div>
+                <div class="col-5"><strong><?php echo $woocommerce->cart->get_cart_tax(); ?></strong></div>
             </div>
             <hr class="hr-sm">
             <div class="row text-lg">
                 <div class="col-7 text-right text-muted">Total:</div>
-                <div class="col-5"><strong><?php echo $woocommerce->cart->get_cart_total();?></strong></div>
+                <div class="col-5"><strong><?php echo $woocommerce->cart->get_cart_total(); ?></strong></div>
             </div>
         </div>
     </div>
@@ -55,7 +56,7 @@
     <div class="module module-logo bg-dark dark">
     <a href="#">
         <img src="<?php echo get_stylesheet_directory_uri();
-?>/assets/img/logo-light.svg" alt="" width="88">
+                    ?>/assets/img/logo-light.svg" alt="" width="88">
     </a>
     <button class="close" data-toggle="panel-mobile"><i class="ti ti-close"></i></button>
     </div>
@@ -88,12 +89,12 @@
                             </tr>
                             <?php 
                             global $pickup_hours;
-$weekdays = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-for ($i = 0; $i < count($weekdays); $i++) {
-	echo '<tr><td><strong>' . $weekdays[$i] . ': </strong></td><td>&nbsp;</td><td>' . $pickup_hours[$i]->start_hour . ' - ' . $pickup_hours[$i]->close_start_hour . '</td></tr>';
-	echo '<tr><td></td><td>&nbsp;</td><td>' . $pickup_hours[$i]->close_end_hour . ' - ' . $pickup_hours[$i]->end_hour . '</td></tr>';
-}
-?>
+                            $weekdays = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+                            for ($i = 0; $i < count($weekdays); $i++) {
+                                echo '<tr><td><strong>' . $weekdays[$i] . ': </strong></td><td>&nbsp;</td><td>' . $pickup_hours[$i]->start_hour . ' - ' . $pickup_hours[$i]->close_start_hour . '</td></tr>';
+                                echo '<tr><td></td><td>&nbsp;</td><td>' . $pickup_hours[$i]->close_end_hour . ' - ' . $pickup_hours[$i]->end_hour . '</td></tr>';
+                            }
+                            ?>
                         </table>
                     </div>
                     <div class="col-lg-5">
@@ -124,7 +125,7 @@ for ($i = 0; $i < count($weekdays); $i++) {
                 <!-- Footer 2nd Row -->
                 <div class="footer-second-row">
                     <span class="text-muted">© Copyright Western Lake Chinese Seafood Restaurant <?php echo date('Y', time());
-?>. Made with love by James Zhao.</span>
+                                                                                                ?>. Made with love by James Zhao.</span>
                 </div>
             </div>
         </footer>
@@ -134,30 +135,30 @@ for ($i = 0; $i < count($weekdays); $i++) {
     </div>
     <!-- JS Plugins -->
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/jquery/dist/jquery.min.js"></script>
+                ?>/assets/plugins/jquery/dist/jquery.min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBqnyk9JGW2XOblOw26-C48h1djj18imo"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/tether/dist/js/tether.min.js"></script>
+                ?>/assets/plugins/tether/dist/js/tether.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+                ?>/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/slick-carousel/slick/slick.min.js"></script>
+                ?>/assets/plugins/slick-carousel/slick/slick.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/jquery.appear/jquery.appear.js"></script>
+                ?>/assets/plugins/jquery.appear/jquery.appear.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/jquery.scrollto/jquery.scrollTo.min.js"></script>
+                ?>/assets/plugins/jquery.scrollto/jquery.scrollTo.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/jquery.localscroll/jquery.localScroll.min.js"></script>
+                ?>/assets/plugins/jquery.localscroll/jquery.localScroll.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+                ?>/assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.min.js"></script>
+                ?>/assets/plugins/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/twitter-fetcher/js/twitterFetcher_min.js"></script>
+                ?>/assets/plugins/twitter-fetcher/js/twitterFetcher_min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/skrollr/dist/skrollr.min.js"></script>
+                ?>/assets/plugins/skrollr/dist/skrollr.min.js"></script>
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/plugins/animsition/dist/js/animsition.min.js"></script>
+                ?>/assets/plugins/animsition/dist/js/animsition.min.js"></script>
     <!-- JS Core -->
     <script src="<?php echo get_stylesheet_directory_uri();
-?>/assets/js/core.js"></script>
+                ?>/assets/js/core.js"></script>

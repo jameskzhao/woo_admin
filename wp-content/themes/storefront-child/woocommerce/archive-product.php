@@ -143,12 +143,6 @@ get_header();
     
     <script>
     var products = JSON.parse('<?php echo addslashes(json_encode($products_array)); ?>');
-    $(document).ready(function(){
-        $(".add-to-cart").click(function(e){
-            
-            
-        });
-    });
     function addToCart(id, url){
         var selectedProductId = id;
         var productDetails = getProductDetails(id);
