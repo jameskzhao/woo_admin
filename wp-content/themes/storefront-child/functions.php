@@ -87,3 +87,18 @@ function get_header_nav($menu_slug)
     $items = wp_get_nav_menu_items($menu_slug);
     return $items ? buildTree($items, 0) : null;
 }
+
+add_filter('woocommerce_checkout_fields', 'addBootstrapToCheckoutFields' );
+function addBootstrapToCheckoutFields($fields) {
+    foreach ($fields as &$fieldset) {
+        foreach ($fieldset as &$field) {
+            // if you want to add the form-group class around the label and the input
+            $field['class'][] = 'form-group'; 
+            $field['class'][] = 'col-sm-6'; 
+            
+            // add form-control to the actual input
+            $field['input_class'][] = 'form-control';
+        }
+    }
+    return $fields;
+}

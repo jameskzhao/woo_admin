@@ -41,8 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="large-7 col">
 
     <?php
-    $get_payment_method = fl_woocommerce_version_check('3.0.0') ? $order->get_payment_method() : $order->payment_method;
-    $get_order_id = fl_woocommerce_version_check('3.0.0') ? $order->get_id() : $order->id;
+    
     ?>
     <?php do_action( 'woocommerce_thankyou_' . $get_payment_method, $get_order_id ); ?>
     <?php do_action( 'woocommerce_thankyou', $get_order_id ); ?>
@@ -59,25 +58,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<?php _e( 'Order number:', 'woocommerce' ); ?>
 						<strong><?php echo $order->get_order_number(); ?></strong>
 					</li>
+					<li class="woocommerce-order-overview__date date">
+						<?php _e( 'Date:', 'woocommerce' ); ?>
+						<strong><?php echo wc_format_datetime( $order->get_date_created() ); ?></strong>
+					</li>
 
-					<?php if(fl_woocommerce_version_check('3.0.0')) { ?>
-						<li class="woocommerce-order-overview__date date">
-							<?php _e( 'Date:', 'woocommerce' ); ?>
-							<strong><?php echo wc_format_datetime( $order->get_date_created() ); ?></strong>
+					<?php if ( is_user_logged_in() && $order->get_user_id() === get_current_user_id() && $order->get_billing_email() ) : ?>
+						<li class="woocommerce-order-overview__total total">
+							<?php _e( 'Email:', 'woocommerce' ); ?>
+							<strong><?php echo $order->get_billing_email(); ?></strong>
 						</li>
-
-						<?php if ( is_user_logged_in() && $order->get_user_id() === get_current_user_id() && $order->get_billing_email() ) : ?>
-							<li class="woocommerce-order-overview__total total">
-								<?php _e( 'Email:', 'woocommerce' ); ?>
-								<strong><?php echo $order->get_billing_email(); ?></strong>
-							</li>
-						<?php endif; ?>
-					<?php } else { ?><!-- else when older older version-->
-						<li class="woocommerce-order-overview__date date">
-						  <?php _e( 'Date:', 'woocommerce' ); ?>
-						  <strong><?php echo date_i18n( get_option( 'date_format' ), strtotime( $order->order_date ) ); ?></strong>
-						</li>
-					<?php } ?>
+					<?php endif; ?>
+					
 
 					<li class="woocommerce-order-overview__total total">
 						<?php _e( 'Total:', 'woocommerce' ); ?>
@@ -85,7 +77,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</li>
 
 					<?php
-					$payment_method_title = fl_woocommerce_version_check('3.0.0') ? $order->get_payment_method_title() : $order->payment_method_title;
+					$payment_method_title = $order->get_payment_method_title();
 					if ( $payment_method_title ) :
 					?>
 						<li class="woocommerce-order-overview__payment-method method">
