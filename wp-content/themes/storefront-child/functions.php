@@ -102,3 +102,16 @@ function addBootstrapToCheckoutFields($fields) {
     }
     return $fields;
 }
+
+function output_payment_button() {
+    $order_button_text = apply_filters( 'woocommerce_order_button_text', __( 'Place order', 'woocommerce' ) );
+    echo '<div class="text-center"><input type="submit" class="btn btn-primary" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr( $order_button_text ) . '" data-value="' . esc_attr( $order_button_text ) . '" /></div>';
+}
+
+add_action( 'woocommerce_review_order_after_payment', 'output_payment_button' );
+
+function remove_woocommerce_order_button_html() {
+    return '';
+}
+
+add_filter( 'woocommerce_order_button_html', 'remove_woocommerce_order_button_html' );

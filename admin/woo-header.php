@@ -3,6 +3,7 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use Automattic\WooCommerce\Client;
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 
 $woocommerce = new Client(
     'http://weew.ca',
