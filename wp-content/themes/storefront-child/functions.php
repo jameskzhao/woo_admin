@@ -115,3 +115,11 @@ function remove_woocommerce_order_button_html() {
 }
 
 add_filter( 'woocommerce_order_button_html', 'remove_woocommerce_order_button_html' );
+
+add_action( 'woocommerce_thankyou', 'woocommerce_thankyou_change_order_status', 10, 1 );
+function woocommerce_thankyou_change_order_status( $order_id ){
+    if( ! $order_id ) return;
+    $order = wc_get_order( $order_id );
+    if( $order->get_status() == 'processing' )
+        $order->update_status( 'new' );
+}
