@@ -46,33 +46,43 @@ try {
         <div class="main-inner">
             <div class="container">
                 <div class="row">
-                    <ul class="pager">
-                        <li><a href="customers.php?page=<?php echo $page-1;?>">Previous</a></li>
-                        <li><a href="customers.php?page=<?php echo $page+1;?>">Next</a></li>
-                    </ul>
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th> ID </th>
-                                <th> Avatar </th>
-                                <th> Name </th>
-                                <th> Street </th>
-                                <th> Postal Code </th>
-                                <th> City </th>
-                                <th> Phone </th>
-                                <th> Email </th>
-                                <th> Orders </th>
-                                <th> Total Spent </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php echo $customer_table_body; ?>
-                        </tbody>
-                    </table>
-                    <ul class="pager">
-                        <li><a href="customers.php?page=<?php echo $page-1;?>">Previous</a></li>
-                        <li><a href="customers.php?page=<?php echo $page+1;?>">Next</a></li>
-                    </ul>
+                    <div class="span12">
+                        <div class="widget">
+                            <div class="widget-content">
+                                <ul class="pager">
+                                    <li><a href="customers.php?page=<?php echo $page-1;?>">Previous</a></li>
+                                    <li><a href="customers.php?page=<?php echo $page+1;?>">Next</a></li>
+                                </ul>
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th> ID </th>
+                                            <th> Avatar </th>
+                                            <th> Name </th>
+                                            <th> Street </th>
+                                            <th> Postal Code </th>
+                                            <th> City </th>
+                                            <th> Phone </th>
+                                            <th> Email </th>
+                                            <th> Orders </th>
+                                            <th> Total Spent </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php echo $customer_table_body; ?>
+                                    </tbody>
+                                </table>
+                                <ul class="pager">
+                                    <li><a href="customers.php?page=<?php echo $page-1;?>">Previous</a></li>
+                                    <li><a href="customers.php?page=<?php echo $page+1;?>">Next</a></li>
+                                </ul>
+                            </div>
+                            <!-- /widget-content -->
+                        </div>
+                        <!-- /widget -->
+                    </div>
+                    <!-- /span12 -->
+                    
                 </div>
                 <!-- /row -->
             </div>

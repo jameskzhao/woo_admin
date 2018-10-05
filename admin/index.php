@@ -20,7 +20,10 @@ try {
         <td id="td_order_date_' . $single_order->id . '">' . $single_order->date_created . '</td>
         <td id="td_order_total_' . $single_order->id . '">' . $single_order->total . '</td>
         <td id="td_order_status_' . $single_order->id . '">' . $single_order->status . '</td>
-        <td class="td-actions"><a href="javascript:;" id="edit-order_' . $single_order->id . '"class="edit-order btn btn-small btn-primary"><i class="fas fa-edit"></i></a></td>
+        <td class="td-actions">
+            <a href="javascript:;" id="edit-order_' . $single_order->id . '"class="edit-order btn btn-small btn-primary"><i class="fas fa-edit"></i></a>
+            <a href="javascript:;" id="delete-order_' . $single_order->id . '"class="del-order btn btn-small btn-danger"><i class="far fa-trash-alt"></i></a>
+        </td>
         </tr>';
     }
 } catch (Automattic\WooCommerce\HttpClient\HttpClientException $e) {
@@ -45,22 +48,29 @@ try {
         <div class="main-inner">
             <div class="container">
                 <div class="row">
-                <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th> ID </th>
-                                <th> Name </th>
-                                <th> Time Created </th>
-                                <th> Total </th>
-                                <th> Status </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php echo $orders_table_body;
-?>
-                        </tbody>
-                    </table>
+                    <div class="span12">
+                        <div class="widget">
+                            <div class="widget-content">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th> ID </th>
+                                            <th> Name </th>
+                                            <th> Time Created </th>
+                                            <th> Total </th>
+                                            <th> Status </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php echo $orders_table_body;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /widget -->
+                    </div>
+                    <!-- /span12 -->
                 </div>
                 <!-- /row -->
             </div>
@@ -154,7 +164,6 @@ try {
                 $('#modal-title').text('Order #:'+order_id);
                 $('#bill').html(bill_table);
                 $('#order').html(order_table);
-                console.log($('#order_id').attr('style'));
                 $('#order_id').attr('value', order_id);
                 $('#orderModal').modal();
 
