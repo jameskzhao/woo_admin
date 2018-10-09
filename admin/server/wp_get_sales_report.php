@@ -12,7 +12,7 @@ function get_order_stats($start_date, $end_date){
     AND posts.post_status IN ('wc-pickup', 'wc-ready', 'wc-completed')
     AND date(posts.`post_date`) <= '{$end_date}'
     AND date(posts.`post_date`) >= '{$start_date}'
-    GROUP BY year(posts.post_date), month(posts.post_date), day(posts.post_date)";
+    GROUP BY DATE(posts.post_date)";
     if($query_results = $wpdb->get_results($query)){
         return $query_results;
     }

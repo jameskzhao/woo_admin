@@ -54,7 +54,7 @@ try {
                                         <input type="text" name="daterange" value="" />
                                 </div>
                                 <div class="col-lg-12">
-                                    <canvas id="myChart" width="1000" height="400"></canvas>
+                                    <canvas id="myChart" style="width:100%; height:400px;"></canvas>
                                 </div>
                                 <div class="col-lg-12">
                                     <ul class="pager">
@@ -109,6 +109,7 @@ try {
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <!-- <script src="js/chart.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
+    <!-- <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
     <script>
         $(function() {
             $('input[name="daterange"]').daterangepicker({
@@ -121,17 +122,16 @@ try {
                     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                 },
                 "alwaysShowCalendars": true,
-                "startDate": "09/28/2018",
-                "endDate": "10/04/2018"
             }, function(start, end, label) {
-                console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
                 var post_data = {start_date:start.format('YYYY-MM-DD'), end_date:end.format('YYYY-MM-DD')};
+                var date_range = getDates(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
                 $.post('server/wp_get_sales_report.php', post_data, function(data){
-                    console.log(data.length);
+                    console.log(data);
+                    
                     var labels = [];
                     var new_data = [];
                     for(i = 0; i < data.length; i++){
-                        labels.push(new Date(data[i].report_year, data[i].report_month-1, data[i].report_date).toLocaleString());
+                        labels.push(new Date(data[i].report_year, data[i].report_month-1, data[i].report_date).toLocaleDateString());
                         new_data.push({x: new Date(data[i].report_year, data[i].report_month-1, data[i].report_date),y: data[i].total_sales});
                     }
                     console.log(labels);
@@ -150,7 +150,13 @@ try {
                             scales: {
                                 xAxes: [{
                                     type: 'time',
-                                    distribution: 'series'
+                                    time: {
+                                        displayFormats: {
+                                            quarter: 'MMM YYYY'
+                                        }
+                                    },
+                                    distribution: 'linear'
+                                    
                                 }],
                                 yAxes: [{
                                     ticks: {
@@ -163,14 +169,31 @@ try {
                                     tension: 0, // disables bezier curves
                                 }
                             }
-                    }
+                        }
                     }); 
                 },'json');
             });
         });
     </script>
+    
     <script>
-        
+        // Returns an array of dates between the two dates
+        var getDates = function(startDate, endDate) {
+            startDate = new Date(startDate);
+            endDate = new Date(endDate);
+            var dates = [],
+                currentDate = startDate,
+                addDays = function(days) {
+                    var date = new Date(this.valueOf());
+                    date.setDate(date.getDate() + days);
+                    return date;
+                };
+            while (currentDate <= endDate) {
+                dates.push(currentDate);
+                currentDate = addDays.call(currentDate, 1);
+            }
+            return dates;
+        };
     </script>
 </body>
 
