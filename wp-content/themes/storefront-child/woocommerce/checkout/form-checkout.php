@@ -27,7 +27,7 @@ $get_checkout_url = apply_filters( 'woocommerce_get_checkout_url', wc_get_checko
 ?>
 <section class="section bg-light">
 	<div class="container">
-		<form name="checkout" method="post" class="checkout woocommerce-checkout <?php echo $wrapper_classes; ?>" action="<?php echo esc_url( $get_checkout_url ); ?>" enctype="multipart/form-data">
+		<form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url( $get_checkout_url ); ?>" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-xl-8 col-lg-7">
 					<div class="bg-white p-4 p-md-5 mb-4">

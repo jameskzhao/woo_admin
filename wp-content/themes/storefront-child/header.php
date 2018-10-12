@@ -8,25 +8,29 @@
  */
 global $pickup_hours;
 $pickup_hours = get_hours('pickup');
-$username = htmlspecialchars($_POST["username"]);
-$password = htmlspecialchars($_POST["password"]);
-if($username && $password){
+$username = htmlspecialchars(get_param("username"));
+$password = htmlspecialchars(get_param("password"));
+if ($username && $password) {
+    error_log('Login start');
+    error_log($username);
     $user = get_user_by('login', $username);
     /*** COMPARE FORM PASSWORD WITH WORDPRESS PASSWORD ***/
-    if (!wp_check_password($password, $user->data->user_pass, $user->ID)) :
+    if (!wp_check_password($password, $user->data->user_pass, $user->ID)):
         return false;
     endif;
     wp_set_current_user($user->ID, $username);
+    wp_set_auth_cookie($user->ID);
+    if(is_user_logged_in()) : error_log('Login successful'); endif;
 }
 
 ?>
 <!doctype html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes();?>>
 <head>
-    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta charset="<?php bloginfo('charset');?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2.0">
     <link rel="profile" href="http://gmpg.org/xfn/11">
-    <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
+    <link rel="pingback" href="<?php bloginfo('pingback_url');?>">
     <!-- CSS Plugins -->
     <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/plugins/slick-carousel/slick/slick.css" />
@@ -39,7 +43,7 @@ if($username && $password){
     <link id="theme" rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/assets/css/themes/theme-beige.min.css" />
     <link id="theme" rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/style.css" />
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class();?>>
     <!-- Body Wrapper -->
     <div id="body-wrapper" class="animsition">
         <!-- Header -->
@@ -62,30 +66,26 @@ if($username && $password){
                                 <li><a href="/shop">Order Online</a></li>
                                 <li><a href="<?php echo is_home() ? '' : '/' ?>#map">About Us</a></li>
                                 <li><a href="<?php echo is_home() ? '' : '/' ?>#footer">Contact</a></li>
-                                <?php if (is_user_logged_in()) { 
-                                    $current_user = wp_get_current_user();
-                                    ?>
+                                <?php if (is_user_logged_in()) :$current_user = wp_get_current_user();?>
                                     <li class="has-dropdown">
-                                        <a href="#"><?php echo $current_user->display_name;?></a>
+                                        <a href="#"><?php echo $current_user->display_name; ?></a>
                                         <div class="dropdown-container">
                                             <ul>
                                                 <li><a class="login_button" href="<?php echo wp_logout_url(home_url()); ?>">Logout</a></li>
                                             </ul>
                                         </div>
                                     </li>
-                                <?php 
-                                } else { ?>
+                                <?php else :?>
                                     <li><a href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-user"></i>&nbsp;Login</a></li>
-                                    <?php 
-                                } ?>
+                                <?php endif;?>
                             </ul>
                         </nav>
                     </div>
-                    <?php 
-                    global $woocommerce;
-                    $cart_total = $woocommerce->cart->get_cart_total();
-                    $cart_items_count = $woocommerce->cart->get_cart_contents_count();
-                    ?>
+                    <?php
+global $woocommerce;
+$cart_total = $woocommerce->cart->get_cart_total();
+$cart_items_count = $woocommerce->cart->get_cart_contents_count();
+?>
                     <div class="col-md-2">
                         <a href="#" class="module module-cart right" data-toggle="panel-cart">
                             <span class="cart-icon">
@@ -144,4 +144,3 @@ if($username && $password){
             <!-- Page Content -->
             <div class="page-content">
 
-        
