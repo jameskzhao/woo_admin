@@ -162,3 +162,12 @@ function leap_custom_checkout_field($checkout)
     echo '</div>';
 }
 
+
+/**
+ * Remove 'xxx has been added' message after adding to cart
+ */
+add_filter( 'wc_add_to_cart_message', 'remove_add_to_cart_message' );
+
+function remove_add_to_cart_message() {
+    return;
+}
