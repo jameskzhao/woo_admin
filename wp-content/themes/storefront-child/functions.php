@@ -1,27 +1,14 @@
 <?php
+
+
+require_once 'utilities.php';
 add_action('init', 'leap_enqueue_script');
-function get_param($name, $default = null)
-{
-    return isset($_POST[$name]) ? $_POST[$name] : isset($_GET[$name]) ? $_GET[$name] : $default;
-}
+
 function leap_enqueue_script()
 {
     wp_enqueue_script('jQuery');
 }
-function get_hours($type = 'pickup')
-{
-    global $wpdb;
-    $query = "SELECT * FROM store_time WHERE type = '{$type}'";
-    if ($query_results = $wpdb->get_results($query)) {
-        foreach ($query_results as $single_result) {
-            $single_result->start_hour = date('H:i', strtotime($single_result->start_hour));
-            $single_result->end_hour = date('H:i', strtotime($single_result->end_hour));
-            $single_result->close_start_hour = date('H:i', strtotime($single_result->close_start_hour));
-            $single_result->close_end_hour = date('H:i', strtotime($single_result->close_end_hour));
-        }
-        return $query_results;
-    }
-}
+
 function get_variation_products($product_id)
 {
     $args = array(
@@ -54,14 +41,7 @@ function get_variation_products($product_id)
     }
     return $return_array;
 }
-function find_hours_by_day($pickup_hours, $weekday)
-{
-    foreach ($pickup_hours as $hours) {
-        if ($hours->weekday == $weekday) {
-            return $hours;
-        }
-    }
-}
+
 function find_submenu($menu_array, $parent_menu_id)
 {
     $return_array = array();
@@ -144,30 +124,45 @@ add_filter('woocommerce_billing_fields', 'leap_custom_billing_fields');
 /**
  * Add custom field to the checkout page
  */
+
 add_action('woocommerce_after_order_notes', 'leap_custom_checkout_field');
+
 function leap_custom_checkout_field($checkout)
 {
     echo '<div id="custom_checkout_field"><h2>' . __('Pickup/Delivery Time') . '</h2>';
-    woocommerce_form_field('wish_time', array(
+    $hour_options = get_hour_options();
+    $field_data = array(
         'type' => 'select',
         'class' => array(
             'state_select form-control',
         ),
-        'options' => array(
-            date('H:i', current_time('timestamp')),
-        ),
+        'options' => $hour_options,
         'label' => __('Wish time'),
-    ),
-        $checkout->get_value('wish_time'));
+    );
+    woocommerce_form_field(
+        'wish_time', 
+        $field_data,
+        $checkout->get_value('wish_time')
+    );
     echo '</div>';
 }
 
+/**
+ * Update the order meta with field value
+ */
+add_action( 'woocommerce_checkout_update_order_meta', 'leap_custom_checkout_field_update_order_meta' );
 
+function leap_custom_checkout_field_update_order_meta( $order_id ) {
+    if ( ! empty( $_POST['wish_time'] ) ) {
+        update_post_meta( $order_id, '_order_wish_time', sanitize_text_field( $_POST['wish_time'] ) );
+    }
+}
 /**
  * Remove 'xxx has been added' message after adding to cart
  */
-add_filter( 'wc_add_to_cart_message', 'remove_add_to_cart_message' );
+add_filter('wc_add_to_cart_message', 'remove_add_to_cart_message');
 
-function remove_add_to_cart_message() {
+function remove_add_to_cart_message()
+{
     return;
 }

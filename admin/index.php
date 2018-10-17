@@ -63,7 +63,7 @@ try {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php echo $orders_table_body;?>
+                                        <?php echo $orders_table_body; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -113,11 +113,14 @@ try {
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#bill" data-toggle="tab">Bill</a></li>
                     <li role="presentation"><a href="#order" data-toggle="tab">Order</a></li>
+                    <li role="presentation"><a href="#remarks" data-toggle="tab">Remarks</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="bill">
                     </div>
                     <div class="tab-pane" id="order">
+                    </div>
+                    <div class="tab-pane" id="remarks">
                     </div>
                 </div>
             </div>
@@ -146,8 +149,9 @@ try {
                 var order_data = get_order_by_key(order_id);
                 console.log(order_data);
                 var bill_table = '<table class="table table-bordered">';
+                var display_fields = ['first_name', 'last_name', 'email', 'phone'];
                 for(key in order_data.billing){
-                    if(order_data.billing.hasOwnProperty(key)){
+                    if(order_data.billing.hasOwnProperty(key) && display_fields.indexOf(key)!=-1){
                         bill_table += '<tr><td>'+key+'</td><td>'+order_data.billing[key]+'</td></tr>';
                     }
                 }
@@ -160,10 +164,18 @@ try {
                 }
                 order_table += '<tr><td></td><td></td><td>Tax</td><td>'+order_data.total_tax+'</td></tr>';
                 order_table += '<tr><td></td><td></td><td>Total</td><td>'+order_data.total+'</td></tr>';
+                var remarks_table = '<table class="table table-bordered">';
+                remarks_table += '<tr><td>Customer Note</td><td>'+order_data.customer_note+'</td></tr>';
+                var order_wish_time = get_meta_data(order_data.meta_data, '_order_wish_time');
+                if(order_wish_time){
+                    remarks_table += '<tr><td>Wish Time</td><td>'+order_wish_time+'</td></tr>';
+                }
+                remarks_table += '</table>';
                 $("input[name=status][value=" + order_data.status + "]").attr('checked', 'checked');
                 $('#modal-title').text('Order #:'+order_id);
                 $('#bill').html(bill_table);
                 $('#order').html(order_table);
+                $('#remarks').html(remarks_table);
                 $('#order_id').attr('value', order_id);
                 $('#orderModal').modal();
 
@@ -196,7 +208,25 @@ try {
                     }
                 }
             }
+            function get_meta_data(meta_data, meta_name){
+                for(var i = 0; i < meta_data.length; i++){
+                    if(meta_data[i].key==meta_name){
+                        return meta_data[i].value;
+                    }
+                }
+            }
+            var audio = new Audio('audio/alert.mp3');
+            setInterval(
+                function check_new_order(){
+                    console.log('checking new orders');
+                    // audio.play();
+                },
+                10000
+            );
+            
         });
+        
+        
     </script>
 </body>
 </html>
