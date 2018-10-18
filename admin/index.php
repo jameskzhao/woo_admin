@@ -3,8 +3,8 @@ require_once 'auth-header.php';
 require_once 'woo-header.php';
 
 $page = isset($_GET['page']) && $_GET['page'] > 0 ? $_GET['page'] : 1;
-$current_date_start = date('c', strtotime('yesterday midnight'));
-$current_date_end = date('c', strtotime('today midnight'));
+$current_date_start = date('c', strtotime(current_time('Y-m-d 00:00:00')));
+$current_date_end = date('c', strtotime(current_time('Y-m-d 00:00:00') . ' +1 day'));
 $data = array(
     'per_page' => 20,
     'page' => $page,
