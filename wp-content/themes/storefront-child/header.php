@@ -8,8 +8,8 @@
  */
 global $pickup_hours;
 $pickup_hours = get_hours('pickup');
-$username = htmlspecialchars(get_param("username"));
-$password = htmlspecialchars(get_param("password"));
+$username = htmlspecialchars($_POST['username']);
+$password = htmlspecialchars($_POST['password']);
 if ($username && $password) {
     error_log('Login start');
     error_log($username);

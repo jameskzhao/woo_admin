@@ -3,10 +3,13 @@ require_once 'auth-header.php';
 require_once 'woo-header.php';
 
 $page = isset($_GET['page']) && $_GET['page'] > 0 ? $_GET['page'] : 1;
+$current_date_start = date('c', strtotime('yesterday midnight'));
+$current_date_end = date('c', strtotime('today midnight'));
 $data = array(
     'per_page' => 20,
     'page' => $page,
-
+    'after' => $current_date_start,
+    'before' => $current_date_end,
 );
 
 try {
@@ -51,6 +54,10 @@ try {
                     <div class="span12">
                         <div class="widget">
                             <div class="widget-content">
+                                <div id="new-order" class="alert" style="display:none;">
+                                    You have <span id="new-order-count"></span> new order(s)! Please <a href=".">refresh to view</a>.
+                                </div>
+                                <h3>Displaying orders from <?php echo $current_date_start; ?> to <?php echo $current_date_end; ?> </h3>
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
@@ -127,6 +134,7 @@ try {
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="print_order">Print Order</button>
             <button type="button" id="modal_save_btn" class="btn btn-primary">Save changes</button>
         </div>
     </div>
@@ -139,11 +147,11 @@ try {
 ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/printThis.js"></script>
     <script src="js/bootstrap.js"></script>
     <script>
         $(document).ready(function(){
-            var orders = <?php echo json_encode($orders);
-?>;
+            var orders = <?php echo json_encode($orders); ?>;
             $('.edit-order').click(function(){
                 var order_id = this.id.replace('edit-order_','');
                 var order_data = get_order_by_key(order_id);
@@ -179,6 +187,9 @@ try {
                 $('#order_id').attr('value', order_id);
                 $('#orderModal').modal();
 
+            });
+            $('#print_order').click(function(){
+                $("#order").printThis();
             });
             $('#modal_save_btn').click(function(){
                 var cur_order_id = $('#order_id').val();
@@ -219,14 +230,30 @@ try {
             setInterval(
                 function check_new_order(){
                     console.log('checking new orders');
-                    // audio.play();
+                    if(orders.length>0){
+                        var max_order_id = orders[0].id;
+                    }else{
+                        var max_order_id = 0;
+                    }
+                    $.post('server/check_new_order.php',{max_order_id:max_order_id}, function(data){
+                        if(data.error_code==0){
+                            console.log(data);
+                            if(data.new_order_count > 0){
+                                audio.play();
+                                $('#new-order-count').text(data.new_order_count);
+                                $('#new-order').show();
+                            }else{
+                                $('#new-order').hide();
+                            }
+                        }
+                    },'json');
                 },
                 10000
             );
-            
+
         });
-        
-        
+
+
     </script>
 </body>
 </html>

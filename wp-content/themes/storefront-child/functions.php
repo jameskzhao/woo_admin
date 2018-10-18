@@ -1,9 +1,10 @@
 <?php
-
-
 require_once 'utilities.php';
 add_action('init', 'leap_enqueue_script');
-
+function get_param($name, $default = null)
+{
+    return isset($_POST[$name]) ? $_POST[$name] : isset($_GET[$name]) ? $_GET[$name] : $default;
+}
 function leap_enqueue_script()
 {
     wp_enqueue_script('jQuery');

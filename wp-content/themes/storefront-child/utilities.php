@@ -3,10 +3,7 @@ $current_time = current_time('mysql');
 $current_timestamp = current_time('timestamp');
 $current_date = date('Y-m-d', $current_timestamp);
 
-function get_param($name, $default = null)
-{
-    return isset($_POST[$name]) ? $_POST[$name] : isset($_GET[$name]) ? $_GET[$name] : $default;
-}
+
 function get_estimated_wait_time()
 {
     global $wpdb;
