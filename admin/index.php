@@ -17,15 +17,19 @@ try {
     $orders_table_body = '';
     foreach ($orders as $single_order) {
         $name = $single_order->billing->first_name . ' ' . $single_order->billing->last_name;
-        $orders_table_body .= '<tr>
+        $tr_class = ($single_order->status == 'new') ? 'new-order-tr' : '';
+        $orders_table_body .= '<tr class="' . $tr_class . '">
         <td id="td_order_id_' . $single_order->id . '">' . $single_order->id . '</td>
         <td>' . $name . '</td>
         <td id="td_order_date_' . $single_order->id . '">' . $single_order->date_created . '</td>
         <td id="td_order_total_' . $single_order->id . '">' . $single_order->total . '</td>
         <td id="td_order_status_' . $single_order->id . '">' . $single_order->status . '</td>
         <td class="td-actions">
-            <a href="javascript:;" id="edit-order_' . $single_order->id . '"class="edit-order btn btn-small btn-primary"><i class="fas fa-edit"></i></a>
-            <a href="javascript:;" id="delete-order_' . $single_order->id . '"class="del-order btn btn-small btn-danger"><i class="far fa-trash-alt"></i></a>
+            <a href="javascript:;" id="edit-order_' . $single_order->id . '"class="edit-order btn btn-lg btn-primary"><i class="fas fa-search"></i> View</a>
+            <a href="javascript:;" id="complete-order_' . $single_order->id . '"class="complete-order btn btn-lg btn-success"><i class="fas fa-check"></i> Complete</a>
+            <a href="javascript:;" id="delete-order_' . $single_order->id . '"class="del-order btn btn-lg btn-danger"><i class="far fa-trash-alt"></i> Cancel</a>
+            
+            
         </td>
         </tr>';
     }
@@ -57,7 +61,7 @@ try {
                                 <div id="new-order" class="alert" style="display:none;">
                                     You have <span id="new-order-count"></span> new order(s)! Please <a href=".">refresh to view</a>.
                                 </div>
-                                <h3>Displaying orders from <?php echo $current_date_start; ?> to <?php echo $current_date_end; ?> </h3>
+                                <h1>Order List Today</h1>
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
@@ -94,25 +98,6 @@ try {
             <hr>
             <form action="" id="edit-order">
                 <fieldset>
-                    <div class="control-group">
-                        <label class="control-label">Change Status</label>
-                        <div class="controls">
-                            <label class="radio inline">
-                                <input type="radio" name="status" value="new"> New
-                            </label>
-                            <label class="radio inline">
-                                <input type="radio" name="status" value="kitchen"> Kitchen
-                            </label>
-                            <label class="radio inline">
-                                <input type="radio" name="status" value="ready"> Ready
-                            </label>
-                            <label class="radio inline">
-                                <input type="radio" name="status" value="pickup"> Picked Up
-                            </label>
-
-                        </div>
-                        <!-- /controls -->
-                    </div>
                     <input id ="order_id" type="text" style="display:none;">
                 </fieldset>
             </form>
@@ -133,9 +118,9 @@ try {
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" id="print_order">Print Order</button>
-            <button type="button" id="modal_save_btn" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            <button type="button" class="btn btn-primary"id="print_order"><i class="fas fa-print"></i> Print Order</button>
+            <!-- <button type="button" id="modal_save_btn" class="btn btn-primary">Save changes</button> -->
         </div>
     </div>
     <!-- /main -->
@@ -188,30 +173,60 @@ try {
                 $('#orderModal').modal();
 
             });
-            $('#print_order').click(function(){
-                $("#order").printThis();
-            });
-            $('#modal_save_btn').click(function(){
-                var cur_order_id = $('#order_id').val();
-                var cur_order_status = $("input[name='status']:checked").val();
-                if (typeof cur_order_status != 'undefined'){
+            $('.del-order').click(function(){
+                if(confirm('Cancel order?')){
+                    var del_order_id = $(this).attr('id').replace('delete-order_', '');
                     var post_data = {};
-                    post_data.id = cur_order_id;
-                    post_data.status = cur_order_status;
+                    post_data.id = del_order_id;
+                    post_data.status = 'cancelled';
                     $.post('server/wp_update_order.php',post_data, function(data){
                         if(typeof(data.error)!=='undefined'){
                             alert(data.error);
                         }else{
                             $('#td_order_status_'+data.id).html(data.status);
+                            $('#td_order_id_'+data.id).closest('tr').removeClass('new-order-tr');
                         }
                     },'json');
-                    $('#orderModal').modal('toggle');
-                }else{
-                    $('#error_alert').html('<strong>Error!</strong> No Status has been selected.');
-                    $('#error_alert').show();
-
                 }
             });
+            $('.complete-order').click(function(){
+                if(confirm('Order Complete?')){
+                    var complete_order_id = $(this).attr('id').replace('complete-order_', '');
+                    var post_data = {};
+                    post_data.id = complete_order_id;
+                    post_data.status = 'completed';
+                    $.post('server/wp_update_order.php',post_data, function(data){
+                        console.log(data);
+                        if(typeof(data.error)!=='undefined'){
+                            alert(data.error);
+                        }else{
+                            $('#td_order_status_'+data.id).html(data.status);
+                            $('#td_order_id_'+data.id).closest('tr').removeClass('new-order-tr');
+                        }
+                    },'json');
+                }
+            })
+            $('#print_order').click(function(){
+                var cur_order_id = $('#order_id').val();
+                var post_data = {};
+                post_data.id = cur_order_id;
+                post_data.status = 'kitchen';
+                $.post('server/wp_update_order.php',post_data, function(data){
+                    if(typeof(data.error)!=='undefined'){
+                        alert(data.error);
+                    }else{
+                        $('#td_order_status_'+data.id).html(data.status);
+                        $('#td_order_id_'+data.id).closest('tr').removeClass('new-order-tr');
+                        $('#orderModal').modal('toggle');
+                        $("#order").printThis({
+                            importCSS: false,
+                            loadCSS: "",
+                            header: "<h1>Order Print: " + cur_order_id + "</h1>"
+                        });
+                    }
+                },'json');
+            });
+
             function get_order_by_key(key_id){
                 for(var i = 0; i < orders.length; i++){
                     if(orders[i].id==key_id){

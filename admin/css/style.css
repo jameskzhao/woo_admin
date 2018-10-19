@@ -1367,3 +1367,8 @@ table.fc-border-separate {
         width: 200px;
     }
 }
+
+.new-order-tr {
+    font-weight: 900;
+    color: coral;
+}
