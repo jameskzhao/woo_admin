@@ -85,7 +85,12 @@ function navbar_top($active_page = 'index')
                             <span>Settings</span>
                         </a>
                     </li>
-
+                    <li <?php echo $active_page == 'emergency' ? 'class="active"' : ''; ?>>
+                        <a href="emergency.php">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Emergency Brake</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- /container -->
