@@ -25,15 +25,6 @@ require_once 'woo-header.php';
                             <li>
                                 <a href="#hours" data-toggle="tab">Hours</a>
                             </li>
-                            <li>
-                                <a href="#products" data-toggle="tab">Products</a>
-                            </li>
-                            <li>
-                                <a href="#promos" data-toggle="tab">Promos</a>
-                            </li>
-                            <li>
-                                <a href="#text" data-toggle="tab">Text/SMS</a>
-                            </li>
                         </ul>
                         <br>
                         <div class="tab-content">
@@ -42,15 +33,6 @@ require_once 'woo-header.php';
                             </div>
                             <div class="tab-pane " id="hours">
                                 <?php require_once('html/setting-hours.php');?>
-                            </div>
-                            <div class="tab-pane " id="products">
-                                <?php require_once('html/setting-products.php');?>
-                            </div>
-                            <div class="tab-pane " id="promos">
-                                promos
-                            </div>
-                            <div class="tab-pane " id="text">
-                                text
                             </div>
                         </div>
                     </div>

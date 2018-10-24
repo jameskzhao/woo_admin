@@ -166,9 +166,22 @@ get_header();
     }
     function addToWooCart(url){
         console.log('adding to cart. url is '+url);
-        $.get(url,{},function(data){
-            location.reload();
-        },'');
+        $.get('<?php echo get_stylesheet_directory_uri(); ?>'+'/server/check_store_open.php',{},function(data){
+            if(data.store_closed=='N'){
+                $.get(url,{},function(data){
+                    location.reload();
+                },'');
+            }else{
+                console.log(data);
+                if(data.emergency_expire > data.current_timestamp){
+                    var date = '  Estimated back time is ' + data.emergency_expire;
+                }else{
+                    var date = '';
+                }
+                alert('We are sorry but our online order is closed for now.' + date);
+            }
+        },'json');
+        
     }
     function getProductDetails(id){
         for(var i=0; i<products.length; i++){

@@ -67,6 +67,13 @@ function navbar_top($active_page = 'index')
                             <span>Customers</span>
                         </a>
                     </li>
+                    <li <?php echo $active_page == 'products' ? 'class="active"' : ''; ?>>
+                        <a href="products.php">
+                            <i class="fas fa-coffee"></i>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    
                     <li <?php echo $active_page == 'archive' ? 'class="active"' : ''; ?>>
                         <a href="archive.php">
                             <i class="fas fa-archive"></i>
