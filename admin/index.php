@@ -89,6 +89,7 @@ try {
         </div>
         <!-- /main-inner -->
     </div>
+    <!-- /main -->
     <div class="modal fade" id="orderModal" tabindex="-1" role="dialog">
         <div class="modal-body">
             <h3 id="modal-title"></h3>
@@ -123,7 +124,7 @@ try {
             <!-- <button type="button" id="modal_save_btn" class="btn btn-primary">Save changes</button> -->
         </div>
     </div>
-    <!-- /main -->
+    
     <?php extra_bottom();
 ?>
     <?php admin_page_footer();
