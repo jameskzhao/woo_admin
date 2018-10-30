@@ -8,9 +8,8 @@ try {
         'date_min' => $start_date,
         'date_max' => $end_date,
     );
-    $report_result = $woocommerce->get('reports/sales', $data);
-    $top_seller_table_body = '';
-    echo json_encode($report_result[0]);
+    $report_result = $woocommerce->get('reports/top_sellers', $data);
+    echo json_encode($report_result);
 } catch (HttpClientException $e) {
     $e->getMessage(); // Error message.
     $e->getRequest(); // Last request data.

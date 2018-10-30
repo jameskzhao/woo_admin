@@ -7,7 +7,7 @@ function get_param($name, $default = null)
 }
 function leap_enqueue_script()
 {
-    wp_enqueue_script('jQuery');
+    wp_enqueue_script("jquery");
 }
 
 function get_variation_products($product_id)

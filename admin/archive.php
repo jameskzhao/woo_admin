@@ -50,36 +50,28 @@ try {
                     <div class="span12">
                         <div class="widget">
                             <div class="widget-content">
-                                <div class="col-lg-3">
-                                        <input type="text" name="daterange" value="" />
-                                </div>
-                                <div class="col-lg-12">
-                                    <canvas id="myChart" style="width:100%; height:400px;"></canvas>
-                                </div>
-                                <div class="col-lg-12">
-                                    <ul class="pager">
-                                        <li><a href="archive.php?page=<?php echo $page - 1; ?>">Previous</a></li>
-                                        <li><a href="archive.php?page=<?php echo $page + 1; ?>">Next</a></li>
-                                    </ul>
-                                    <table class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th> ID </th>
-                                                <th> Name </th>
-                                                <th> Time Created </th>
-                                                <th> Total </th>
-                                                <th> Status </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php echo $orders_table_body; ?>
-                                        </tbody>
-                                    </table>
-                                    <ul class="pager">
-                                        <li><a href="archive.php?page=<?php echo $page - 1; ?>">Previous</a></li>
-                                        <li><a href="archive.php?page=<?php echo $page + 1; ?>">Next</a></li>
-                                    </ul>
-                                </div>
+                                <ul class="pager">
+                                    <li><a href="archive.php?page=<?php echo $page - 1; ?>">Previous</a></li>
+                                    <li><a href="archive.php?page=<?php echo $page + 1; ?>">Next</a></li>
+                                </ul>
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th> ID </th>
+                                            <th> Name </th>
+                                            <th> Time Created </th>
+                                            <th> Total </th>
+                                            <th> Status </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php echo $orders_table_body; ?>
+                                    </tbody>
+                                </table>
+                                <ul class="pager">
+                                    <li><a href="archive.php?page=<?php echo $page - 1; ?>">Previous</a></li>
+                                    <li><a href="archive.php?page=<?php echo $page + 1; ?>">Next</a></li>
+                                </ul>
                             </div>
                             <!-- /widget-content -->
                         </div>
@@ -105,96 +97,6 @@ try {
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery-1.7.2.min.js"></script>
     <script src="js/bootstrap.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <!-- <script src="js/chart.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
-    <!-- <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
-    <script>
-        $(function() {
-            $('input[name="daterange"]').daterangepicker({
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                "alwaysShowCalendars": true,
-            }, function(start, end, label) {
-                var post_data = {start_date:start.format('YYYY-MM-DD'), end_date:end.format('YYYY-MM-DD')};
-                var date_range = getDates(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-                $.post('server/wp_get_sales_report.php', post_data, function(data){
-                    console.log(data);
-                    
-                    var labels = [];
-                    var new_data = [];
-                    for(i = 0; i < data.length; i++){
-                        labels.push(new Date(data[i].report_year, data[i].report_month-1, data[i].report_date).toLocaleDateString());
-                        new_data.push({x: new Date(data[i].report_year, data[i].report_month-1, data[i].report_date),y: data[i].total_sales});
-                    }
-                    console.log(labels);
-                    var ctx = document.getElementById("myChart").getContext("2d");
-                    var myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                            label: 'Demo',
-                            data: new_data,
-                            borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                xAxes: [{
-                                    type: 'time',
-                                    time: {
-                                        displayFormats: {
-                                            quarter: 'MMM YYYY'
-                                        }
-                                    },
-                                    distribution: 'linear'
-                                    
-                                }],
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }]
-                            },
-                            elements: {
-                                line: {
-                                    tension: 0, // disables bezier curves
-                                }
-                            }
-                        }
-                    }); 
-                },'json');
-            });
-        });
-    </script>
-    
-    <script>
-        // Returns an array of dates between the two dates
-        var getDates = function(startDate, endDate) {
-            startDate = new Date(startDate);
-            endDate = new Date(endDate);
-            var dates = [],
-                currentDate = startDate,
-                addDays = function(days) {
-                    var date = new Date(this.valueOf());
-                    date.setDate(date.getDate() + days);
-                    return date;
-                };
-            while (currentDate <= endDate) {
-                dates.push(currentDate);
-                currentDate = addDays.call(currentDate, 1);
-            }
-            return dates;
-        };
-    </script>
 </body>
 
 </html>

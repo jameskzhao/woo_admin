@@ -59,4 +59,3 @@ $get_checkout_url = apply_filters( 'woocommerce_get_checkout_url', wc_get_checko
 	</div>
 </section>
 <?php do_action( 'woocommerce_after_checkout_form', $checkout ); ?>
-
