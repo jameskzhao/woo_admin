@@ -141,7 +141,7 @@ function leap_custom_checkout_field($checkout)
         'label' => __('Wish time'),
     );
     woocommerce_form_field(
-        'wish_time', 
+        'wish_time',
         $field_data,
         $checkout->get_value('wish_time')
     );
@@ -150,7 +150,7 @@ function leap_custom_checkout_field($checkout)
         'class' => array(
             'state_select form-control',
         ),
-        'options' => ['pickup'=>'pickup','delivery'=>'delivery'],
+        'options' => ['pickup' => 'pickup', 'delivery' => 'delivery'],
         'label' => __('Order type'),
     );
     woocommerce_form_field(
@@ -164,12 +164,17 @@ function leap_custom_checkout_field($checkout)
 /**
  * Update the order meta with field value
  */
-add_action( 'woocommerce_checkout_update_order_meta', 'leap_custom_checkout_field_update_order_meta' );
+add_action('woocommerce_checkout_update_order_meta', 'leap_custom_checkout_field_update_order_meta');
 
-function leap_custom_checkout_field_update_order_meta( $order_id ) {
-    if ( ! empty( $_POST['wish_time'] ) ) {
-        update_post_meta( $order_id, '_order_wish_time', sanitize_text_field( $_POST['wish_time'] ) );
+function leap_custom_checkout_field_update_order_meta($order_id)
+{
+    if (!empty($_POST['wish_time'])) {
+        update_post_meta($order_id, '_order_wish_time', sanitize_text_field($_POST['wish_time']));
+        
     }
+    $order_type = WC()->session->get('order_type');
+    if(empty($order_type)){$order_type='pickup';}
+    update_post_meta($order_id, '_order_type', $order_type);
 }
 /**
  * Remove 'xxx has been added' message after adding to cart

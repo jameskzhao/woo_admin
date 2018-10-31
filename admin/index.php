@@ -17,9 +17,11 @@ try {
     $orders_table_body = '';
     foreach ($orders as $single_order) {
         $name = $single_order->billing->first_name . ' ' . $single_order->billing->last_name;
+        $order_type = get_post_meta($single_order->id, '_order_type', true);
         $tr_class = ($single_order->status == 'new') ? 'new-order-tr' : '';
         $orders_table_body .= '<tr class="' . $tr_class . '">
         <td id="td_order_id_' . $single_order->id . '">' . $single_order->id . '</td>
+        <td id="td_order_type_' . $single_order->id . '">' . $order_type . '</td>
         <td>' . $name . '</td>
         <td id="td_order_date_' . $single_order->id . '">' . $single_order->date_created . '</td>
         <td id="td_order_total_' . $single_order->id . '">' . $single_order->total . '</td>
@@ -66,6 +68,7 @@ try {
                                     <thead>
                                         <tr>
                                             <th> ID </th>
+                                            <th> Type </th>
                                             <th> Name </th>
                                             <th> Time Created </th>
                                             <th> Total </th>
@@ -156,13 +159,21 @@ try {
                     var current_product = order_data.line_items[i];
                     order_table += '<tr><td>'+current_product.name+'</td><td>'+current_product.price+'</td><td>'+current_product.quantity+'</td><td>'+current_product.total+'</td></tr>';
                 }
+                for(var i = 0; i < order_data.fee_lines.length; i++){
+                    var current_fee_line = order_data.fee_lines[i];
+                    order_table += '<tr><td></td><td></td><td>'+current_fee_line.name+'</td><td>'+current_fee_line.total+'</td></tr>';
+                }
                 order_table += '<tr><td></td><td></td><td>Tax</td><td>'+order_data.total_tax+'</td></tr>';
                 order_table += '<tr><td></td><td></td><td>Total</td><td>'+order_data.total+'</td></tr>';
                 var remarks_table = '<table class="table table-bordered">';
                 remarks_table += '<tr><td>Customer Note</td><td>'+order_data.customer_note+'</td></tr>';
                 var order_wish_time = get_meta_data(order_data.meta_data, '_order_wish_time');
+                var order_type = get_meta_data(order_data.meta_data, '_order_type');
                 if(order_wish_time){
                     remarks_table += '<tr><td>Wish Time</td><td>'+order_wish_time+'</td></tr>';
+                }
+                if(order_type){
+                    remarks_table += '<tr><td>Order Type</td><td>'+order_type+'</td></tr>';
                 }
                 remarks_table += '</table>';
                 $("input[name=status][value=" + order_data.status + "]").attr('checked', 'checked');
