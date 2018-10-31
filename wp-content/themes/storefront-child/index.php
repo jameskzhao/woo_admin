@@ -31,12 +31,20 @@ $hours_today = find_hours_by_day($pickup_hours, $day_of_week);
 				<div class="tab-content">
 					<div id="pickup" class="tab-pane active" role="tabpanel">
 						<div class="form-group">
-							<select name="" id="" class="form-control">
-								<option value="1">4989 Victoria Dr, Vancouver</option>
-							</select>
-							<a href="/shop?order_type=pickup" class="btn btn-dark">
-								<span>Order Online</span>
-							</a>
+							<div class="row">
+								<div class="col-sm-8">
+									<select name="" id="" class="form-control">
+										<option value="1">4989 Victoria Dr, Vancouver</option>
+									</select>
+								</div>
+								<div class="col-sm-4">
+									<a href="/shop?order_type=pickup" class="btn btn-dark">
+										<span>Order Online</span>
+									</a>
+								</div>
+							</div>
+							
+							
 						</div>
 						
 					</div>
