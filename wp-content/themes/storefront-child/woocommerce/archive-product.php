@@ -17,7 +17,7 @@
  */
 
 defined('ABSPATH') || exit;
-
+$order_type = isset($_GET['order_type'])?$_GET['order_type']:'pickup';
 $orderby = 'name';
 $order = 'asc';
 $hide_empty = true;
@@ -66,15 +66,14 @@ get_header();
                                 <?php
                                 while ($loop->have_posts()) : $loop->the_post();
                                 global $product;
-                                $current_product_data = $product->get_data();
                                 $data_to_push = array(
-                                    'id' => $current_product_data['id'],
-                                    'name' => $current_product_data['name'],
-                                    'prize' => $current_product_data['price'],
+                                    'id' => $product->get_id(),
+                                    'name' => $product->get_name(),
+                                    'price' => $product->get_price(),
                                 );
-                                $data_to_push['variation'] = get_variation_products($current_product_data['id']);
+                                $data_to_push['variation'] = get_variation_products($product->get_id());
                                 array_push($products_array, $data_to_push);
-                                $image_src = wp_get_attachment_image_src($product->image_id);
+                                $image_src = wp_get_attachment_image_src($product->get_image_id());
                                 ?>
                                     <div class="menu-item menu-list-item">
                                         <div class="row align-items-center">
@@ -87,12 +86,12 @@ get_header();
                                             </div>
                                             <!-- col-sm-2 end -->
                                             <div class="col-sm-5 mb-2 mb-sm-0">
-                                                <h6 class="mb-0"><?php echo $product->name; ?></h6>
-                                                <span class="text-muted text-sm"><?php echo $product->description; ?></span>
+                                                <h6 class="mb-0"><?php echo $product->get_name(); ?></h6>
+                                                <span class="text-muted text-sm"><?php echo $product->get_description(); ?></span>
                                             </div>
                                             <div class="col-sm-5 text-sm-right">
-                                                <span class="text-md mr-4"> $<?php echo $product->price; ?></span>
-                                                <button id="<?php echo $current_product_data['id'] ?>" class="btn btn-outline-secondary btn-sm" onclick="addToCart(this.id, '<?php echo $product->add_to_cart_url(); ?>')"><span>Add to cart</span></button>
+                                                <span class="text-md mr-4"> $<?php echo $product->get_price(); ?></span>
+                                                <button id="<?php echo $product->get_id(); ?>" class="btn btn-outline-secondary btn-sm" onclick="addToCart(this.id, '<?php echo $product->add_to_cart_url(); ?>')"><span>Add to cart</span></button>
                                             </div>
                                         </div>
                                     </div>

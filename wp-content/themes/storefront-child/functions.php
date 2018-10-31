@@ -145,6 +145,19 @@ function leap_custom_checkout_field($checkout)
         $field_data,
         $checkout->get_value('wish_time')
     );
+    $order_type_data = array(
+        'type' => 'select',
+        'class' => array(
+            'state_select form-control',
+        ),
+        'options' => ['pickup'=>'pickup','delivery'=>'delivery'],
+        'label' => __('Order type'),
+    );
+    woocommerce_form_field(
+        'order_type',
+        $order_type_data,
+        $checkout->get_value('order_type')
+    );
     echo '</div>';
 }
 

@@ -12,17 +12,40 @@ $hours_today = find_hours_by_day($pickup_hours, $day_of_week);
 <!-- Content -->
 <div id="content">
 	<!-- Section bg image -->
-	<section id="bg-image" class="section section-lg dark bg-dark" style="min-height:600px;">
+	<section id="bg-image" class="section section-lg bg-dark" style="min-height:600px;">
 		<!-- BG Image -->
 		<div class="bg-image bg-parallax skrollable skrollable-between" data-top-bottom="background-position-y: 30%" data-bottom-top="background-position-y: 70%" style="background-image: url('http://westernlake.ca/wp-content/uploads/2015/07/fried_prawn_spring_rolls.jpg-e1439160997647.jpg'); background-position-y: 44.8024%;">
 			<img src="http://westernlake.ca/wp-content/uploads/2015/07/fried_prawn_spring_rolls.jpg-e1439160997647.jpg" alt="" style="display: none;">
 		</div>
 		<div class="container text-center">
-			<div class="col-lg-8 push-lg-2">
-				<h2 class="mb-3">Would you like to visit Us?</h2>
-				<a href="/shop" class="btn btn-primary">
-					<span>Order Online</span>
-				</a>
+			
+			<div class="col-lg-6 push-lg-3 order-button-wrapper">
+				<ul class="nav nav-pills nav-fill mb-3" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" href="#pickup" data-toggle="tab" role="tab">Pickup</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#delivery" data-toggle="tab" role="tab">Delivery</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div id="pickup" class="tab-pane active" role="tabpanel">
+						<div class="form-group">
+							<select name="" id="" class="form-control">
+								<option value="1">4989 Victoria Dr, Vancouver</option>
+							</select>
+							<a href="/shop?order_type=pickup" class="btn btn-dark">
+								<span>Order Online</span>
+							</a>
+						</div>
+						
+					</div>
+					<div id="delivery" class="tab-pane" role="tabpanel">
+						<a href="/shop?order_type=delivery" class="btn btn-dark">
+							<span>Order Online</span>
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
