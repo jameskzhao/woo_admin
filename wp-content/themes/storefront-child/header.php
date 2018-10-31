@@ -11,7 +11,6 @@ global $pickup_hours, $woocommerce;
 if(isset($_GET['order_type'])){
     WC()->session->set('order_type', $_GET['order_type']);
 }
-error_log(print_r(WC()->session->get('order_type'), true));
 $pickup_hours = get_hours('pickup');
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = htmlspecialchars($_POST['username']);
