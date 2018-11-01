@@ -44,7 +44,7 @@ get_header();
                             </ul>
                         </nav>
                     </div>
-                    <div class="col-12 d-lg-none fixed-top" style="margin-top:60px;">
+                    <div class="col-12 d-lg-none fixed-top" style="margin-top:60px; z-index:1;">
                         <select class="form-control" id="category-select">
                             <?php
                                 foreach ($product_categories as $category) {
@@ -68,7 +68,7 @@ get_header();
                             $loop = new WP_Query($args);
                             ?>
                             <div id="<?php echo $category->name; ?>" class="menu-category">
-                                <div class="menu-category-title">
+                                <div class="menu-category-title" data-appear-top-offset="400">
                                     <div class="bg-image"><img src="<?php echo $image; ?>" alt=""></div>
                                     <h2 class="title"><?php echo $category->name; ?></h2>
                                 </div>
@@ -156,9 +156,14 @@ get_header();
             window.location.hash = $(this).val();
         });
     });
-    $(document.body).on('appear', 'section', function(e, $affected) {
+    $('.menu-category-title h2').appear();
+    $('.menu-category-title h2').on('appear', function(e, $affected) {
         // this code is executed for each appeared element
-        console.log($(this));
+        var appeared_title = $($affected[0]).text();
+        var selected_title = $('#category-select option:selected').text();
+        if(appeared_title!==selected_title){
+            $('#category-select option[value="#'+appeared_title+'"]').prop('selected', true);
+        }
     });
     function addToCart(id, url){
         var selectedProductId = id;
