@@ -2,13 +2,16 @@
 require_once 'auth-header.php';
 require_once 'woo-header.php';
 $page = isset($_GET['page']) && $_GET['page'] > 0 ? $_GET['page'] : 1;
+$keyword = isset($_POST['search']) ? $_POST['search'] : '';
 try {
     $data = array(
         'per_page' => 20,
         'page' => $page,
     );
+    if($keyword){
+        $data['search'] = $keyword;
+    } 
     $customers = $woocommerce->get('customers', $data);
-
     $customer_table_body = '';
     foreach ($customers as $single_customer) {
         $name = !empty($single_customer->billing->first_name) ? $single_customer->billing->first_name . ' ' . $single_customer->billing->last_name : $single_customer->username;
@@ -53,6 +56,10 @@ try {
                                     <li><a href="customers.php?page=<?php echo $page-1;?>">Previous</a></li>
                                     <li><a href="customers.php?page=<?php echo $page+1;?>">Next</a></li>
                                 </ul>
+                                <form action="" method="post">
+                                    <input class="span2" id="appendedInputButton" type="text" name="search">
+                                    <button class="btn btn-lg btn-primary" type="submit">Search</button>
+                                </form>
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
@@ -98,7 +105,10 @@ try {
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery-1.7.2.min.js"></script>
     <script src="js/bootstrap.js"></script>
-    
+    <script>
+        var customers = <?php echo json_encode($customers)?>;
+        console.log(customers);
+    </script>
 </body>
 
 </html>

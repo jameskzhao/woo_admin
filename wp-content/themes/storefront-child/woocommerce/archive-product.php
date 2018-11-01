@@ -32,9 +32,9 @@ get_header();
 ?>
         
                 <div class="row no-gutters">
-                    <div class="col-md-3">
+                    <div class="col-lg-3 d-none d-lg-block">
                         <!-- Menu Navigation -->
-                        <nav id="menu-navigation" class="stick-to-content" data-local-scroll>
+                        <nav id="menu-navigation" class="stick-to-content " data-local-scroll>
                             <ul class="nav nav-menu bg-dark dark">
                                 <?php
                                 foreach ($product_categories as $category) {
@@ -44,8 +44,17 @@ get_header();
                             </ul>
                         </nav>
                     </div>
+                    <div class="col-12 d-lg-none fixed-top" style="margin-top:60px;">
+                        <select class="form-control" id="category-select">
+                            <?php
+                                foreach ($product_categories as $category) {
+                                    echo '<option value ="#' . $category->name . '">' . $category->name . '</option>';
+                                }
+                            ?>
+                        </select>
+                    </div>
                     <!-- col-md-3 end -->
-                    <div class="col-md-9">
+                    <div class="col-lg-9">
                         <?php
                         $products_array = array();
                         foreach ($product_categories as $category) {
@@ -142,6 +151,15 @@ get_header();
     
     <script>
     var products = JSON.parse('<?php echo addslashes(json_encode($products_array)); ?>');
+    $(function () {
+        $('#category-select').change(function () {
+            window.location.hash = $(this).val();
+        });
+    });
+    $(document.body).on('appear', 'section', function(e, $affected) {
+        // this code is executed for each appeared element
+        console.log($(this));
+    });
     function addToCart(id, url){
         var selectedProductId = id;
         var productDetails = getProductDetails(id);
