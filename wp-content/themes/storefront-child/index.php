@@ -4,6 +4,7 @@
  *
  * @package storefront
  */
+$store_settings = get_store_settings();
 
 get_header();
 $day_of_week = date('w', current_time('timestamp'));
@@ -15,7 +16,7 @@ $hours_today = find_hours_by_day($pickup_hours, $day_of_week);
 	<section id="bg-image" class="section section-lg bg-dark" style="min-height:600px;">
 		<!-- BG Image -->
 		<div class="bg-image bg-parallax skrollable skrollable-between" data-top-bottom="background-position-y: 30%" data-bottom-top="background-position-y: 70%" style="background-image: url('http://westernlake.ca/wp-content/uploads/2015/07/fried_prawn_spring_rolls.jpg-e1439160997647.jpg'); background-position-y: 44.8024%;">
-			<img src="http://westernlake.ca/wp-content/uploads/2015/07/fried_prawn_spring_rolls.jpg-e1439160997647.jpg" alt="" style="display: none;">
+			<img src="<?php echo $store_settings->banner_url;?>" alt="" style="display: none;">
 		</div>
 		<div class="container text-center">
 			

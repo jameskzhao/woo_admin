@@ -6,7 +6,7 @@
  *
  * @package storefront
  */
-global $pickup_hours, $woocommerce;
+global $pickup_hours, $store_settings, $woocommerce;
 
 if(isset($_GET['order_type'])){
     WC()->session->set('order_type', $_GET['order_type']);
@@ -25,6 +25,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     if (is_user_logged_in()) : error_log('Login successful');
     endif;
 }
+
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -56,7 +57,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                         <!-- Logo -->
                         <div class="module">
                             <a href="/">
-                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-light.svg" alt="" width="88">
+                                <img src="<?php echo $store_settings->logo_url?>" alt="" width="188">
                             </a>
                         </div>
                     </div>

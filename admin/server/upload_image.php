@@ -45,7 +45,7 @@ if (isset($error) && $error != '') {
 		}
 	}
 }
-$return_array = array('success' => $success, 'error_code' => $error_code, 'error_message' => $error_message, 'file' => $movefile);
+$return_array = array('success' => $success, 'error_code' => $error_code, 'error_message' => $error_message, 'file' => $movefile, 'request_data' => $_POST);
 
 echo json_encode($return_array);
 ?>

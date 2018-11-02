@@ -73,7 +73,7 @@ function navbar_top($active_page = 'index')
                             <span>Products</span>
                         </a>
                     </li>
-                    
+
                     <li <?php echo $active_page == 'archive' ? 'class="active"' : ''; ?>>
                         <a href="archive.php">
                             <i class="fas fa-archive"></i>
@@ -112,7 +112,7 @@ function navbar_top($active_page = 'index')
 function extra_bottom()
 {
     ?>
-    
+
     <?php
 
 }
@@ -123,7 +123,7 @@ function admin_page_footer()
         <div class="footer-inner">
             <div class="container">
                 <div class="row">
-                    <div class="span12"> &copy; <?php echo date('Y');?>
+                    <div class="span12"> &copy; <?php echo date('Y'); ?>
                         <a href="#">Dev Restaurant</a>. </div>
                     <!-- /span12 -->
                 </div>
@@ -137,10 +137,18 @@ function admin_page_footer()
     <?php
 
 }
-function get_setting($column){
-    global $wpdb;
-    $query = "SELECT $column FROM store_settings WHERE id = 1";
-    if($query_result = $wpdb->get_results($query)){
-        return $query_result[0];
+if (!function_exists('save_store_settings')) {
+    function save_store_settings($key, $value)
+    {
+        global $wpdb;
+        $query = "UPDATE store_settings SET $key = '{$value}' WHERE id = 1";
+        $wpdb->query($query);
     }
+}
+
+function save_store_settings($key, $value)
+{
+    global $wpdb;
+    $query = "UPDATE store_settings SET $key = '{$value}' WHERE id = 1";
+    $wpdb->query($query);
 }

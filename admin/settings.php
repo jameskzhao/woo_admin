@@ -1,6 +1,8 @@
 <?php
 require_once 'auth-header.php';
 require_once 'woo-header.php';
+$store_settings = get_store_settings();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,32 +32,51 @@ require_once 'woo-header.php';
                         <div class="tab-content">
                             <div class="tab-pane active" id="general">
                                 <div class="row">
+                                    <div class="alert alert-success" role="alert" hidden="hidden">Upload complete!</div>
+                                    <div class="alert alert-warning" role="alert" hidden="hidden">File too large. Upload failed.</div>
                                     <div class="span6">
                                         <div class="widget">
                                             <div class="widget-header"> <i class="far fa-image icon-2x"></i> <h3>Logo</h3></div>
                                             <div class="widget-content">
-                                                <div class="alert alert-success" role="alert" hidden="hidden">Upload complete!</div>
-                                                <div class="alert alert-warning" role="alert" hidden="hidden">File too large. Upload failed.</div>
-                                                
                                                 <form id="form1" enctype="multipart/form-data" method="post" action="Upload.aspx" class="form-horizontal ">
                                                     <div class="control-group">
                                                         <div>
-                                                            <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();" capture="camera" title="Select Logo" />
+                                                            <input type="file" name="fileToUpload" id="fileToUpload" capture="camera" title="Select Logo" />
                                                         </div>
                                                     </div>
-                                                    <div id="details"></div>
-                                                    <div>
-                                                        <img id="uploadPreview" />
-                                                    </div>
-
-                                                    <div class=" text-center">
-                                                        <input id="submit" type="button" class="btn btn-lg btn-primary " onclick="uploadFile()" value="Upload" disabled="true" />
+                                                    <div id="logo-details"></div>
+                                                    <div class="text-center">
+                                                        <input id="logo-submit" type="button" class="btn btn-lg btn-primary " value="Upload" disabled="true" />
                                                     </div>
 
                                                     <div id="progress" class="progress-bar progress-bar-striped active top_5" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="height: 20px;"></div>
                                                 </form>
-                                                <img id="image_preview" />
-                                                <img id="result_image" style="max-width:80%;">
+                                                <img id="result_image" style="max-width:80%;" src="<?php echo $store_settings->logo_url;?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span6">
+                                        <div class="widget">
+                                            <div class="widget-header"> <i class="far fa-image icon-2x"></i> <h3>Background</h3></div>
+                                            <div class="widget-content">
+                                                <form id="form2" enctype="multipart/form-data" method="post" action="Upload.aspx" class="form-horizontal ">
+                                                    <div class="control-group">
+                                                        <div>
+                                                            <input type="file" name="bannerToUpload" id="bannerToUpload" capture="camera" title="Select Logo" />
+                                                        </div>
+                                                    </div>
+                                                    <div id="banner-details"></div>
+                                                    <div>
+                                                        <img id="uploadBannerPreview" />
+                                                    </div>
+
+                                                    <div class="text-center">
+                                                        <input id="banner-submit" type="button" class="btn btn-lg btn-primary" value="Upload" disabled="true" />
+                                                    </div>
+
+                                                    <div id="progress" class="progress-bar progress-bar-striped active top_5" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="height: 20px;"></div>
+                                                </form>
+                                                <img id="banner_result_image" style="max-width:80%;" src="<?php echo $store_settings->banner_url;?>">
                                             </div>
                                         </div>
                                     </div>
@@ -85,69 +106,19 @@ require_once 'woo-header.php';
     <script src="js/setting-hours.js"></script>
     <script type="text/javascript">
         var files_to_upload = [];
+        $('#fileToUpload').on('change', fileSelected);
+        $('#bannerToUpload').on('change', fileSelected);
+        $('#logo-submit').on('click', uploadFile);
+        $('#banner-submit').on('click', uploadFile);
+       
 
-        function doUpload() {
-            var file = document.getElementById('fileToUpload').files[0];
-            var dataUrl = "";
-            // Create an image
-            var img = document.createElement("img");
-            // Create a file reader
-            var reader = new FileReader();
-            // Set the image once loaded into file reader
-            reader.onload = function(e) {
-                    img.src = e.target.result;
-
-                    var canvas = document.createElement("canvas");
-                    //var canvas = $("<canvas>", {"id":"testing"})[0];
-                    var ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0);
-
-                    // Set Width and Height
-                    var MAX_WIDTH = 400;
-                    var MAX_HEIGHT = 300;
-                    var width = img.width;
-                    var height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    var ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    dataUrl = canvas.toDataURL("image/png");
-                    document.getElementById('image_preview').src = dataUrl;
-
-                    // Post the data
-                    var fd = new FormData();
-                    fd.append("image", dataUrl);
-
-                    var xhr = new XMLHttpRequest();
-                    xhr.upload.addEventListener("progress", uploadProgress, false);
-                    xhr.addEventListener("load", uploadComplete, false);
-                    xhr.addEventListener("error", uploadFailed, false);
-                    xhr.addEventListener("abort", uploadCanceled, false);
-                    xhr.open("POST", "server/upload_image.php");
-                    xhr.send(fd);
-                }
-                // Load files into file reader
-            reader.readAsDataURL(file);
-        }
-
-        function fileSelected() {
-            var count = document.getElementById('fileToUpload').files.length;
-            //document.getElementById('details').innerHTML = "";
+        function fileSelected(e) {
+            var current_id = e.currentTarget.id;
+            console.log(current_id);
+            var count = document.getElementById(e.currentTarget.id).files.length;
+            console.log('There are '+count+' images');
             for (var index = 0; index < count; index++) {
-                var file = document.getElementById('fileToUpload').files[index];
+                var file = document.getElementById(current_id).files[index];
                 var dataUrl = "";
 
                 //create an image
@@ -156,7 +127,7 @@ require_once 'woo-header.php';
                 var reader = new FileReader();
                 //Set the image once loaded into file raeder
                 reader.onload = function(e) {
-                    img.src = e.target.reasult;
+                    img.src = e.target.result;
                     console.log("file reader onload fired");
                     var canvas = document.createElement("canvas");
                     var ctx = canvas.getContext("2d");
@@ -195,30 +166,37 @@ require_once 'woo-header.php';
                     $('.alert-warning').hide();
                     fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
                 }
-                //document.getElementById('details').innerHTML += '文件名: ' + file.name + '<br>文件大小: ' + fileSize + '<br>文件类型: ' + file.type;
-                //document.getElementById('details').innerHTML += '<p>';
-                $('#details').empty();
-                $('#details').append('Filename: ' + file.name + '<br>Size: ' + fileSize + '<br>Type: ' + file.type);
+                if(current_id==='fileToUpload'){
+                    $('#logo-details').empty();
+                    $('#logo-details').append('Filename: ' + file.name + '<br>Size: ' + fileSize + '<br>Type: ' + file.type);
+                    $('#logo-submit').show();
+                    $('#logo-submit').prop('disabled', false);
+                }else if(current_id === 'bannerToUpload'){
+                    $('#banner-details').empty();
+                    $('#banner-details').append('Filename: ' + file.name + '<br>Size: ' + fileSize + '<br>Type: ' + file.type);
+                    $('#banner-submit').show();
+                    $('#banner-submit').prop('disabled', false);
+                }
                 $('.alert-success').hide();
-                $('.alert-info').show();
-                $('#submit').prop('disabled', false);
-                $('#submit').show();
 
             }
         }
 
-        function uploadFile() {
+        function uploadFile(e) {
+            var current_id = e.currentTarget.id;
+            var fileInputId = current_id==='logo-submit'?'fileToUpload':'bannerToUpload';
             var fd = new FormData();
-            var count = document.getElementById('fileToUpload').files.length;
+            var count = document.getElementById(fileInputId).files.length;
             for (var index = 0; index < count; index++) {
-                var file = document.getElementById('fileToUpload').files[index];
+                var file = document.getElementById(fileInputId).files[index];
                 fd.append('myFile', file);
             }
+            fd.append('fileInputId', fileInputId);
             var xhr = new XMLHttpRequest();
-            xhr.upload.addEventListener("progress", uploadProgress, false);
+            // xhr.upload.addEventListener("progress", uploadProgress, false);
             xhr.addEventListener("load", uploadComplete, false);
-            xhr.addEventListener("error", uploadFailed, false);
-            xhr.addEventListener("abort", uploadCanceled, false);
+            // xhr.addEventListener("error", uploadFailed, false);
+            // xhr.addEventListener("abort", uploadCanceled, false);
             xhr.open("POST", "server/upload_image.php");
             xhr.send(fd);
         }
@@ -245,9 +223,20 @@ require_once 'woo-header.php';
                     "width": "0%"
                 });
             } else {
-                $('#submit').hide();
-                $('#progress').hide();
-                $('#result_image').prop("src", return_data.file.url);
+                
+                var post_data = {};
+                if(return_data.request_data.fileInputId==="fileToUpload"){
+                    $('#logo-submit').hide();
+                    $('#result_image').prop("src", return_data.file.url);
+                    post_data.logo_url = return_data.file.url;
+                }else if(return_data.request_data.fileInputId==="bannerToUpload"){
+                    $('#banner-submit').hide();
+                    $('#banner_result_image').prop("src", return_data.file.url);
+                    post_data.banner_url = return_data.file.url;
+                }
+                $.post('server/save_settings.php', post_data, function(data){
+                    console.log(data);
+                },'json');
                 $('.alert-info').hide();
                 $('.alert-success').show();
             }

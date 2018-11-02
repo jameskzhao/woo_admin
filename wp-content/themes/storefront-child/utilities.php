@@ -64,3 +64,8 @@ function find_hours_by_day($pickup_hours, $weekday)
         }
     }
 }
+function get_store_settings($param = "*"){
+    global $wpdb;
+    $query = "SELECT $param FROM store_settings LIMIT 1";
+    return $wpdb->get_results($query)[0];
+}

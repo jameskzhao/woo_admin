@@ -1,7 +1,8 @@
 <?php
 $weekdays = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-$delivery = get_setting('delivery')->delivery;
-$pickup = get_setting('pickup')->pickup;
+$store_settings = get_store_settings();
+$delivery = $store_settings->delivery;
+$pickup = $store_settings->pickup;
 
 function find_hours_of_weekday($hours_array, $weekday)
 {
