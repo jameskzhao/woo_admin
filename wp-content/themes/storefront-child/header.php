@@ -109,7 +109,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             </div>
             <div class="module module-logo">
                 <a href="/">
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-horizontal-dark.svg" alt="">
+                    <img src="<?php echo $store_settings->logo_url;?>" alt="">
                 </a>
             </div>
             <a href="#" class="module module-cart" data-toggle="panel-cart">
