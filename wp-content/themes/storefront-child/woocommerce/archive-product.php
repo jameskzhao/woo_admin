@@ -26,8 +26,8 @@ $cat_args = array(
     'order' => $order,
     'hide_empty' => $hide_empty,
 );
-
 $product_categories = get_terms('product_cat', $cat_args);
+$store_settings = get_store_settings();
 get_header();
 ?>
         
