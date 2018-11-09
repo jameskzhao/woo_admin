@@ -173,33 +173,38 @@ function atwoo_checkbox()
     if ($options['user_amount_alert'] == '1') {
         // form and script
         ?>
-        <div class="add-tip-woocommerce1 container">
-            <form method="get">
-                <div class="row">
-                    <p class="form-row form-row-first form-group col-sm-6">
-                        <input type="text" name="atwoo_amount" class="input-text form-control" placeholder="<?php echo $options['place_tip']; ?>" id="atwoo_amount" value="<?php echo get_option('atwoo_amount_up'); ?>">
-                    </p>
-                    <p class="form-row form-row-last form-group col-sm-6">
-                        <input type="submit" class="btn btn-secondary" id="submit_atwoo" name="apply_amount" value="<?php echo $options['button']; ?>">
-                    </p>
-                </div>
-                <div class="clear"></div>
-            </form>
+        <div class="add-tip-woocommerce1 container section bg-light" style="padding-bottom:15px;">
+            <div class="bg-white p-4 p-md-5 mb-4">
+                <h4 class="border-bottom pb-4"><i class="ti ti-money mr-3 text-primary"></i>Add Tip</h4>
+                <form method="get">
+                    <div class="row">
+                        <p class="form-row form-row-first form-group col-sm-6">
+                            <input type="text" name="atwoo_amount" class="input-text form-control" placeholder="<?php echo $options['place_tip']; ?>" id="atwoo_amount" value="<?php echo get_option('atwoo_amount_up'); ?>">
+                        </p>
+                        <p class="form-row form-row-last form-group col-sm-6">
+                            <input type="submit" class="btn btn-secondary" id="submit_atwoo" name="apply_amount" value="<?php echo $options['button']; ?>">
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+                </form>
+                <?php
+                // checks if submitted fields are empty and adds error
+                if(isset($_GET['atwoo_amount'])){
+                    if (empty($_GET['atwoo_amount'])) {
+                        update_option('atwoo_amount_up', '0');    
+                    }else{
+                        update_option('atwoo_amount_up', max(0, $_GET['atwoo_amount']));
+                    }
+                    $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
+                    header('Location: '.'http://' . $_SERVER['HTTP_HOST'] . $uri_parts[0]);
+                }
+                if(get_option('atwoo_amount_up')){
+                    echo $options['success_message'];
+                }?>
+            </div>
+            
         </div>
         <?php
-        // checks if submitted fields are empty and adds error
-        if(isset($_GET['atwoo_amount'])){
-            if (empty($_GET['atwoo_amount'])) {
-                update_option('atwoo_amount_up', '0');    
-            }else{
-                update_option('atwoo_amount_up', max(0, $_GET['atwoo_amount']));
-            }
-            $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
-            header('Location: '.'http://' . $_SERVER['HTTP_HOST'] . $uri_parts[0]);
-        }
-        if(get_option('atwoo_amount_up')){
-            echo $options['success_message'];
-        }
     }
 }
 add_action('woocommerce_before_calculate_totals', 'woocommerce_custom_user_charge');

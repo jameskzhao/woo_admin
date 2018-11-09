@@ -185,3 +185,17 @@ function remove_add_to_cart_message()
 {
     return;
 }
+
+
+/**
+ * Hide coupon form everywhere
+ */
+ 
+function hide_coupon_field( $enabled ) {
+	if ( is_cart() || is_checkout() ) {
+		$enabled = false;
+	}
+	
+	return $enabled;
+}
+add_filter( 'woocommerce_coupons_enabled', 'hide_coupon_field' );
